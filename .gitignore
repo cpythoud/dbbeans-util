@@ -1,5 +1,5 @@
 .idea/
-DbBeans Util.iml
+*.iml
 build/
 javadoc/
 src-ascii/
