@@ -91,6 +91,124 @@ public class Strings {
     }
 
     /**
+     * Checks if a String is quoted.
+     * <br/>This function checks if the String starts and ends with a quote character. It also checks if any quote
+     * character inside the String is properly escaped, i.e., preceded by a '\' character.
+     * @param string to be checked.
+     * @param openingQuote the character to be used as opening quote.
+     * @param closingQuote the character to be used as closing quote.
+     * @return true if the String is enclosed in quotes, false otherwise.
+     * @throws java.lang.NullPointerException if <code>string</code> is <code>null</code>.
+     * @see Strings#isQuoted(String)
+     */
+    public static boolean isQuoted(final String string, final int openingQuote, final int closingQuote) {
+        if (string == null)
+            throw new NullPointerException("String to examine cannot be null.");
+        if (string.length() < 2)
+            return false;
+
+        if (!(string.indexOf(openingQuote) == 0 && string.lastIndexOf(closingQuote) == string.length() - 1 && string.codePointAt(string.length() - 2) != '\\'))
+            return false;
+
+        if (openingQuote == closingQuote) {
+            if (!quotingCharsEscapedOK(string, openingQuote))
+                return false;
+        } else {
+            if (!quotingCharsEscapedOK(string, openingQuote))
+                return false;
+            if (!quotingCharsEscapedOK(string, closingQuote))
+                return false;
+        }
+
+        return true;
+    }
+
+    private static boolean quotingCharsEscapedOK(final String s, final int quotingChar) {
+        for (int i = 1; i < s.length() - 1; i++)
+            if (s.codePointAt(i) == quotingChar && s.codePointAt(i - 1) != '\\')
+                return false;
+
+        return true;
+    }
+
+    /**
+     * Checks if a String is quoted.
+     * <br/>This function checks if the String starts and ends with a quote character ("). It also checks if any quote
+     * character inside the String is properly escaped, i.e., preceded by a '\' character (\").
+     * @param string to be checked.
+     * @return true if the String is enclosed in quotes ("), false otherwise.
+     * @throws java.lang.NullPointerException if <code>string</code> is <code>null</code>.
+     * @see Strings#isQuoted(String, int, int)
+     */
+    public static boolean isQuoted(final String string) {
+        return isQuoted(string, '"', '"');
+    }
+
+    /**
+     * Insert quotes around a String.
+     * <br/>This function insert the specified quote characters around a String. It also escape any such character
+     * found inside the String by having preceded by the character '\'.
+     * @param string to quote.
+     * @param openingChar to use for the opening quote character.
+     * @param closingChar to use for the closing quote character.
+     * @return the quoted String
+     * @throws java.lang.NullPointerException if <code>string</code> is <code>null</code>.
+     * @see Strings#quickQuote(String, String, String)
+     * @see Strings#quickQuote(String)
+     */
+    public static String quote(final String string, final int openingChar, final int closingChar) {
+        if (string == null)
+            throw new NullPointerException("String to quote cannot be null.");
+
+        int c;
+        int l = string.length();
+        StringBuilder buf = new StringBuilder();
+
+        buf.appendCodePoint(openingChar);
+        for (int i = 0; i < l; i++) {
+            c = string.codePointAt(i);
+            if (c == openingChar || c == closingChar)
+                buf.append("\\");
+            buf.appendCodePoint(c);
+        }
+        buf.appendCodePoint(closingChar);
+
+        return buf.toString();
+    }
+
+    /**
+     * Insert quotes around a String.
+     * <br/>This function insert the specified quote characters around a String. It assumes those characters are not
+     * present inside the String and makes no attempt to escape them. If you expect quoting characters to be present
+     * inside the String and need them escaped, you should use {@link Strings#quote(String, int, int)} instead.
+     * @param string to quote.
+     * @param openingQuote to use for the opening quote character(s).
+     * @param closingQuote to use for the closing quote character(s).
+     * @return the quoted String
+     * @throws java.lang.NullPointerException if <code>string</code> is <code>null</code>.
+     * @see Strings#quote(String, int, int)
+     * @see Strings#quickQuote(String)
+     */
+    public static String quickQuote(final String string, final String openingQuote, final String closingQuote) {
+        return openingQuote + string + closingQuote;
+    }
+
+    /**
+     * Insert quotes (") around a String.
+     * <br/>This function inserts quotes (") around a String. It assumes there are no quotes (") present
+     * inside the String and makes no attempt to escape them. If you expect quotes to be present inside the
+     * String and need them escaped, you should use {@link Strings#quote(String, int, int)} instead.
+     * @param string to quote.
+     * @return the quoted String
+     * @throws java.lang.NullPointerException if <code>string</code> is <code>null</code>.
+     * @see Strings#quote(String, int, int)
+     * @see Strings#quickQuote(String, String, String)
+     */
+    public static String quickQuote(final String string) {
+        return quickQuote(string, "\"", "\"");
+    }
+
+    /**
      * Concatenate the Strings passed as parameters.
      * @param strings to be concatenated.
      * @return the result of the concatenation.
