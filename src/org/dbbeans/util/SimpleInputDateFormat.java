@@ -69,7 +69,7 @@ public class SimpleInputDateFormat {
      * @return a list of separators that can be used between date elements.
      */
     public List<String> getSeparators() {
-        return separators;
+        return Collections.unmodifiableList(separators);
     }
 
     /**
