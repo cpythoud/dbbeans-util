@@ -10,6 +10,16 @@ import java.util.List;
 public class Strings {
 
     /**
+     * Check if a String is empty. A String is considered empty if it's null, its length is zero or it contains
+     * only spaces and/or tabulations.
+     * @param string to be checked.
+     * @return true if string is empty as per the above definition, false otherwise.
+     */
+    public static boolean isEmpty(final String string) {
+        return string == null || string.matches("\\s*");
+    }
+
+    /**
      * Capitalize a String.
      * If the first character of the String is lowercase, an identical String is returned with this first character converted to uppercase.
      * An identical String is returned otherwise.
