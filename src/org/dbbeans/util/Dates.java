@@ -4,10 +4,19 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * ...
+ * This class contains static function to help with Dates manipulations in the context of a database application.
+ * Only Gregorian calendar dates are supported.
  */
 public class Dates {
 
+    /**
+     * Check if a date is correct.
+     * @param day of the month (1-31)
+     * @param month of the year (1-12)
+     * @param year (1583+)
+     * @return true if the date is correct, false otherwise.
+     * @see Dates#isDateOK(String, String, String)
+     */
     public static boolean isDateOK(final int day, final int month, final int year) {
         Calendar cal = new GregorianCalendar(year, month - 1, day);
         cal.setLenient(false);
@@ -20,6 +29,14 @@ public class Dates {
         return result;
     }
 
+    /**
+     * Check if a date is correct.
+     * @param day of the month (1-31)
+     * @param month of the year (1-12)
+     * @param year (1583+)
+     * @return true if the date is correct, false otherwise.
+     * @see Dates#isDateOK(int, int, int)
+     */
     public static boolean isDateOK(final String day, final String month, final String year) {
         boolean result = false;
         try {
@@ -30,18 +47,45 @@ public class Dates {
         return result;
     }
 
-    public static boolean isYYMDDateOK(final String s, final String separator) {
-        final String[] parts = s.split(separator);
+    /**
+     * Check if a date in the format YYMD is correct. That is a date in the format: 4-digits-year separator
+     * 2-digits-month separator 2-digits-day-of-month.
+     * @param date to be checked
+     * @param separator character(s) used to separate the digits
+     * @return true if the date is correct, false otherwise
+     * @see Dates#isDMYYDateOK(String, String)
+     * @see Dates#isMDYYDateOK(String, String)
+     */
+    public static boolean isYYMDDateOK(final String date, final String separator) {
+        final String[] parts = date.split(separator);
         return parts.length == 3 && isDateOK(parts[2], parts[1], parts[0]);
     }
 
-    public static boolean isDMYYDateOK(final String s, final String separator) {
-        final String[] parts = s.split(separator);
+    /**
+     * Check if a date in the format DMYY is correct. That is a date in the format: 2-digits-day-of-month separator
+     * 2-digits-month separator 4-digits-year.
+     * @param date to be checked
+     * @param separator character(s) used to separate the digits
+     * @return true if the date is correct, false otherwise
+     * @see Dates#isYYMDDateOK(String, String)
+     * @see Dates#isDMYYDateOK(String, String)
+     */
+    public static boolean isDMYYDateOK(final String date, final String separator) {
+        final String[] parts = date.split(separator);
         return parts.length == 3 && isDateOK(parts[0], parts[1], parts[2]);
     }
 
-    public static boolean isMDYYDateOK(final String s, final String separator) {
-        final String[] parts = s.split(separator);
+    /**
+     * Check if a date in the format DMYY is correct. That is a date in the format: 2-digits-month separator
+     * 2-digits-day-of-month separator 4-digits-year.
+     * @param date to be checked
+     * @param separator character(s) used to separate the digits
+     * @return true if the date is correct, false otherwise
+     * @see Dates#isYYMDDateOK(String, String)
+     * @see Dates#isDMYYDateOK(String, String)
+     */
+    public static boolean isMDYYDateOK(final String date, final String separator) {
+        final String[] parts = date.split(separator);
         return parts.length == 3 && isDateOK(parts[1], parts[0], parts[2]);
     }
 }
