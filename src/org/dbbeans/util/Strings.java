@@ -3,6 +3,7 @@ package org.dbbeans.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class contains static function to help with Strings manipulations.
@@ -98,6 +99,36 @@ public class Strings {
         }
         buf.append(parts.get(parts.size() - 1));
         return buf.toString().toLowerCase();
+    }
+
+    /**
+     * Replace part of a String by another String.
+     * @param content the String to altered.
+     * @param target the part of the String to be replaced.
+     * @param replacement the String to use as a replacement.
+     * @return a new String identical to <code>content</code> except where <code>target</code> is replaced by
+     * <code>replacement</code>.
+     * @see Strings#replaceMany(String, java.util.Map)
+     */
+    public static String replace(final String content, final String target, final String replacement) {
+        CharSequence a	= target.subSequence(0, target.length());
+        CharSequence b	= replacement.subSequence(0, replacement.length());
+        return content.replace(a, b);
+    }
+
+    /**
+     * Replace parts of a String by other Strings.
+     * @param content the String to altered.
+     * @param replacements a Map of parts to be replaced with their replacement.
+     * @return a new String identical to <code>content</code> except where parts of it have been replaced according
+     * to the <code>replacements</code> Map.
+     * @see Strings#replace(String, String, String)
+     */
+    public static String replaceMany(final String content, Map<String, String> replacements) {
+        String result = content;
+        for (String target: replacements.keySet())
+            result = replace(result, target, replacements.get(target));
+        return result;
     }
 
     /**
