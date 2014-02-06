@@ -62,7 +62,7 @@ public class Dates {
 
     /**
      * Check if a time is correct. This function checks if the hours, minutes and seconds of a time are in
-     * acceptable range, respectively 0-23, 0-59 and 0-59
+     * acceptable range, respectively 0-23, 0-59 and 0-59.
      * @param hours of time to be checked.
      * @param minutes of time to be checked.
      * @param seconds of time to be checked.
@@ -77,6 +77,20 @@ public class Dates {
             // result = false !
         }
         return result;
+    }
+
+    /**
+     * Check if a time String is correctly formatted.
+     * The time string must be comprised of hours, minutes and seconds. Precision beyond seconds is not supported.
+     * The three parts of the time string must be between acceptable range for hours, minutes and seconds,
+     * respectively 0-23, 0-59 and 0-59.
+     * @param time string to be checked.
+     * @param separator between the time string parts.
+     * @return true if time string can be validated, false otherwise.
+     */
+    public static boolean isTimeOK(final String time, final String separator) {
+        final String[] parts = time.split(separator);
+        return parts.length == 3 && isTimeOK(parts[0], parts[1], parts[2]);
     }
 
     /**
