@@ -15,17 +15,19 @@ public class IPv4Address {
             if (!isInRange(bytes[i]))
                 throw new IllegalArgumentException("Illegal value for byte " + (i + 1) + ": " + bytes[i] + " (must be between 0 and 255).");
 
-        this.bytes = new int[4];
-        for (int i = 0; i < 4; i++)
-            this.bytes[i] = bytes[i];
+        setBytes(bytes);
     }
 
     public IPv4Address(final IPv4Address address) {
-        this.bytes = address.bytes;
+        setBytes(address.bytes);
     }
 
     public IPv4Address(final String address) {
         this(valueOf(address));
+    }
+
+    private void setBytes(final int[] bytes) {
+        System.arraycopy(bytes, 0, this.bytes, 0, 4);
     }
 
     public static boolean isValid(final String address) {
@@ -58,7 +60,7 @@ public class IPv4Address {
         return bytePart >= 0 && bytePart < 256;
     }
 
-    private final int[] bytes;
+    private final int[] bytes = new int[4];
 
     private final static Pattern NUMBERS_ONLY = Pattern.compile("[0-9]{1,3}");
 }
