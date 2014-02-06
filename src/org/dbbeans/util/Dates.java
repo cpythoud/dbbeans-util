@@ -48,6 +48,38 @@ public class Dates {
     }
 
     /**
+     * Check if a time is correct. This function checks if the hours, minutes and seconds of a time are in
+     * acceptable range, respectively 0-23, 0-59 and 0-59
+     * @param hours of time to be checked.
+     * @param minutes of time to be checked.
+     * @param seconds of time to be checked.
+     * @return true if time can be validated, false otherwise.
+     * @see Dates#isTimeOK(String, String, String)
+     */
+    public static boolean isTimeOK(final int hours, final int minutes, final int seconds) {
+        return !(hours < 0 || hours > 23 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59);
+    }
+
+    /**
+     * Check if a time is correct. This function checks if the hours, minutes and seconds of a time are in
+     * acceptable range, respectively 0-23, 0-59 and 0-59
+     * @param hours of time to be checked.
+     * @param minutes of time to be checked.
+     * @param seconds of time to be checked.
+     * @return true if time can be validated, false otherwise.
+     * @see Dates#isTimeOK(int, int, int)
+     */
+    public static boolean isTimeOK(final String hours, final String minutes, final String seconds) {
+        boolean result = false;
+        try {
+            result = isTimeOK(Integer.valueOf(hours), Integer.valueOf(minutes), Integer.valueOf(seconds));
+        } catch (final NumberFormatException ex) {
+            // result = false !
+        }
+        return result;
+    }
+
+    /**
      * Check if a date in the format YYMD is correct. That is a date in the format: 4-digits-year separator
      * 2-digits-month separator 2-digits-day-of-month.
      * @param date to be checked
