@@ -2,12 +2,9 @@ package org.dbbeans.util;
 
 import java.util.regex.Pattern;
 
-/**
- * ...
- */
 public class EmailValidator {
 
-    public static boolean validate(final String email, final boolean allowIpForDomain, final boolean extensiveTldValidation, final boolean acceptQuotedStrings) {
+    public static boolean validate(final String email, final boolean allowIpForDomain, final boolean extensiveTldValidation) {
         final String[] parts = email.split("@");
 
         if (parts.length != 2)
@@ -36,17 +33,14 @@ public class EmailValidator {
 
         final String tld = domainParts[domainParts.length - 1];
         if (tld.length() == 2) {
-            if (extensiveTldValidation)
-                return TLDs.isCountryTLD(tld);
-            else
-                return true;
+            return !extensiveTldValidation || TLDs.isCountryTLD(tld);
         }
 
         return TLDs.isGenericTLD(tld) || TLDs.isUSATLD(tld);
     }
 
     public static boolean dotsOK(final String part) {
-        return !part.startsWith(".") && !part.endsWith(".") && part.indexOf("..") == -1;
+        return !part.startsWith(".") && !part.endsWith(".") && !part.contains("..");
     }
 
     public static final Pattern ALLOWED_CHARS_IN_LOCAL_PART = Pattern.compile("[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+");
