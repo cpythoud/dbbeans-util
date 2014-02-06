@@ -5,34 +5,69 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ...
+ * This class contains static functions to check the top level part of domain names.
+ * It is optionally used with the EmailValidator} class.
+ * WARNING: this class does not know (yet) about the new TLDs released in February 2014.
  */
 public class TLDs {
 
+    /**
+     * Check if argument is a valid top level domain name.
+     * @param domain name to be checked.
+     * @return true if the domain name is valid, false otherwise.
+     */
     public static boolean isValidTLD(final String domain) {
         return isGenericTLD(domain) || isUSATLD(domain) || isCountryTLD(domain);
     }
 
+    /**
+     * Check if argument is a valid generic top level domain name (aero, asia, biz, cat, com, coop, info, int, jobs,
+     * mobi, museum, name, net, org, pro, tel, travel, xxx).
+     * @param domain name to be checked.
+     * @return true if the domain name is valid, false otherwise.
+     */
     public static boolean isGenericTLD(final String domain) {
         return GENERIC_TLD.contains(domain);
     }
 
+    /**
+     * Check if argument is a valid generic top level domain name in the USA (edu, gov, mil).
+     * @param domain name to be checked.
+     * @return true if the domain name is valid, false otherwise.
+     */
     public static boolean isUSATLD(final String domain) {
         return USA_TLD.contains(domain);
     }
 
+    /**
+     * Check if argument is a valid country top level domain name.
+     * @param domain name to be checked.
+     * @return true if the domain name is valid, false otherwise.
+     */
     public static boolean isCountryTLD(final String domain) {
         return COUNTRY_TLD.contains(domain);
     }
 
+    /**
+     * Get the list of generic TLDs.
+     * @return the list of generic TLDs.
+     */
     public static List<String> getGenericTLDs() {
         return Collections.unmodifiableList(GENERIC_TLD);
     }
 
+    /**
+     * Get the list of US specific generic TLDs.
+     * @return the list of US specific generic TLDs.
+     */
     public static List<String> getUSATLDs() {
         return Collections.unmodifiableList(USA_TLD);
     }
 
+    /**
+     * Get the list of country TLDs.
+     * @return the list of country TLDs.
+     */
     public static List<String> getCountryTLDs() {
         return Collections.unmodifiableList(COUNTRY_TLD);
     }
