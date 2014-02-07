@@ -5,29 +5,52 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ...
+ * This class is used to validate time input.
+ * Its functions expect a 24 hours daytime in hours, minutes and seconds. Miliseconds are not supported.
+ * This class is mostly used in web applications.
  */
 public class SimpleInputTimeFormat {
 
+    /**
+     * Create a SimpleInputTimeFormat specifying the separator character to be used between hours, minutes and
+     * seconds.
+     * @param separator to be used between time elements.
+     * @see SimpleInputTimeFormat#SimpleInputTimeFormat(java.util.List)
+     */
     public SimpleInputTimeFormat(final String separator) {
         List<String> seps = new ArrayList<String>();
         seps.add(separator);
         this.separators = Collections.unmodifiableList(seps);
     }
 
+    /**
+     * Create a SimpleInputTimeFormat specifying the possible separator characters that can be be used between hours,
+     * minutes and seconds.
+     * @param separators list of possible separators.
+     * @see SimpleInputTimeFormat#SimpleInputTimeFormat(String)
+     */
     public SimpleInputTimeFormat(final List<String> separators) {
         List<String> seps = new ArrayList<String>();
         seps.addAll(separators);
         this.separators = Collections.unmodifiableList(seps);
     }
 
+    /**
+     * Get a list of separators that can be used between time elements (hours, minutes, seconds) for this SimpleTimeFormat.
+     * @return a list of separators that can be used between time elements.
+     */
     public List<String> getSeparators() {
         return separators;
     }
 
-    public boolean validate(final String timeString) {
+    /**
+     * Validate a time according to this SimpleTimeFormat.
+     * @param time to be validated.
+     * @return true if the time is correct according to the format, false otherwise.
+     */
+    public boolean validate(final String time) {
         for (String separator: separators) {
-            if (Dates.isTimeOK(timeString, separator))
+            if (Dates.isTimeOK(time, separator))
                 return true;
         }
 
