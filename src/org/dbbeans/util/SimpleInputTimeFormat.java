@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * This class is used to validate time input.
- * Its functions expect a 24 hours daytime in hours, minutes and seconds. Miliseconds are not supported.
+ * Its functions expect a 24 hours daytime in hours, minutes and seconds. Milliseconds are not supported.
  * This class is mostly used in web applications.
  */
 public class SimpleInputTimeFormat {
