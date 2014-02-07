@@ -4,8 +4,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class is used to validate timestamp input.
+ * Its functions accept dates in various format and expect times as 24 hours daytime in hours, minutes and seconds.
+ * Milliseconds are not supported.
+ * This class is mostly used in web applications.
+ * @see SimpleInputDateFormat
+ * @see SimpleInputTimeFormat
+ */
 public class SimpleInputTimestampFormat {
 
+    /**
+     * Create a SimpleInputTimeStampFormat specifying the separator characters to be used between date and time element.
+     * @param order of the date elements (YYMD, DMYY or MDYY).
+     * @param dateSeparator to be used to separate date elements.
+     * @param timeSeparator to be used to separate time elements.
+     */
     public SimpleInputTimestampFormat(final SimpleInputDateFormat.ElementOrder order, final String dateSeparator, final String timeSeparator) {
         this.order = order;
         List<String> dateSeps = new ArrayList<String>();
@@ -16,6 +30,12 @@ public class SimpleInputTimestampFormat {
         timeSeparators = Collections.unmodifiableList(timeSeps);
     }
 
+    /**
+     * Create a SimpleInputTimeStampFormat specifying the separator characters to be used between date and time element.
+     * @param order of the date elements (YYMD, DMYY or MDYY).
+     * @param dateSeparators that can be used to separate date elements.
+     * @param timeSeparators that can be used to separate time elements.
+     */
     public SimpleInputTimestampFormat(final SimpleInputDateFormat.ElementOrder order, final List<String> dateSeparators, final List<String> timeSeparators) {
         this.order = order;
         List<String> dateSeps = new ArrayList<String>();
@@ -26,32 +46,49 @@ public class SimpleInputTimestampFormat {
         this.timeSeparators = Collections.unmodifiableList(timeSeps);
     }
 
+    /**
+     * Get the expected order of date elements (day, month, year) for this SimpleTimestampFormat.
+     * @return the expected order of date elements.
+     */
     public SimpleInputDateFormat.ElementOrder getOrder() {
         return order;
     }
 
+    /**
+     * Get a list of separators that can be used between date elements (day, month, year) for this SimpleTimestampFormat.
+     * @return a list of separators that can be used between date elements.
+     */
     public List<String> getDateSeparators() {
         return dateSeparators;
     }
 
+    /**
+     * Get a list of separators that can be used between time elements (hours, minutes, seconds) for this SimpleTimestampFormat.
+     * @return a list of separators that can be used between time elements.
+     */
     public List<String> getTimeSeparators() {
         return timeSeparators;
     }
 
-    public boolean validate(final String timestampString) {
+    /**
+     * Validate a time according to this SimpleTimestampFormat.
+     * @param timestamp to be validated.
+     * @return true if the time is correct according to the format, false otherwise.
+     */
+    public boolean validate(final String timestamp) {
         for (String dateSeparator: dateSeparators) {
             for (String timeSeparator: timeSeparators) {
                 switch (order) {
                     case YYMD:
-                        if (Dates.isYYMDTimestampOK(timestampString, dateSeparator, timeSeparator))
+                        if (Dates.isYYMDTimestampOK(timestamp, dateSeparator, timeSeparator))
                             return true;
                         break;
                     case DMYY:
-                        if (Dates.isDMYYTimestampOK(timestampString, dateSeparator, timeSeparator))
+                        if (Dates.isDMYYTimestampOK(timestamp, dateSeparator, timeSeparator))
                             return true;
                         break;
                     case MDYY:
-                        if (Dates.isMDYYTimestampOK(timestampString, dateSeparator, timeSeparator))
+                        if (Dates.isMDYYTimestampOK(timestamp, dateSeparator, timeSeparator))
                             return true;
                         break;
                     default:
