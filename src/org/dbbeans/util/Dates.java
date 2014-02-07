@@ -96,9 +96,9 @@ public class Dates {
     /**
      * Check if a date in the format YYMD is correct. That is a date in the format: 4-digits-year separator
      * 2-digits-month separator 2-digits-day-of-month.
-     * @param date to be checked
-     * @param separator character(s) used to separate the digits
-     * @return true if the date is correct, false otherwise
+     * @param date to be checked.
+     * @param separator character(s) used to separate the digits.
+     * @return true if the date is correct, false otherwise.
      * @see Dates#isDMYYDateOK(String, String)
      * @see Dates#isMDYYDateOK(String, String)
      */
@@ -110,9 +110,9 @@ public class Dates {
     /**
      * Check if a date in the format DMYY is correct. That is a date in the format: 2-digits-day-of-month separator
      * 2-digits-month separator 4-digits-year.
-     * @param date to be checked
-     * @param separator character(s) used to separate the digits
-     * @return true if the date is correct, false otherwise
+     * @param date to be checked.
+     * @param separator character(s) used to separate the digits.
+     * @return true if the date is correct, false otherwise.
      * @see Dates#isYYMDDateOK(String, String)
      * @see Dates#isDMYYDateOK(String, String)
      */
@@ -124,14 +124,95 @@ public class Dates {
     /**
      * Check if a date in the format DMYY is correct. That is a date in the format: 2-digits-month separator
      * 2-digits-day-of-month separator 4-digits-year.
-     * @param date to be checked
-     * @param separator character(s) used to separate the digits
-     * @return true if the date is correct, false otherwise
+     * @param date to be checked.
+     * @param separator character(s) used to separate the digits.
+     * @return true if the date is correct, false otherwise.
      * @see Dates#isYYMDDateOK(String, String)
      * @see Dates#isDMYYDateOK(String, String)
      */
     public static boolean isMDYYDateOK(final String date, final String separator) {
         final String[] parts = date.split(separator);
         return parts.length == 3 && isDateOK(parts[1], parts[0], parts[2]);
+    }
+
+    /**
+     * Check if a timestamp, of which the date part is in the format YYMD, is correct.
+     * @param timestamp to be checked.
+     * @param dateSeparator to be used to separate the date elements (year, month, day).
+     * @param timeSeparator to be used to separate the time elements (hours, minutes, seconds).
+     * @return true if the timestamp is correct, false otherwise.
+     * @see Dates#isYYMDTimestampOK(String, String, String, String)
+     * @see Dates#isYYMDDateOK(String, String)
+     * @see Dates#isTimeOK(String, String)
+     */
+    public static boolean isYYMDTimestampOK(final String timestamp, final String dateSeparator, final String timeSeparator) {
+        return isYYMDTimestampOK(timestamp, dateSeparator, timeSeparator, "\\.");
+    }
+
+    /**
+     * Check if a timestamp, of which the date part is in the format YYMD, is correct.
+     * @param timestamp to be checked.
+     * @param dateSeparator to be used to separate the date elements (year, month, day).
+     * @param timeSeparator to be used to separate the time elements (hours, minutes, seconds).
+     * @param millisecondsSeparator to be used to separate the milliseconds from the time. If you don't need
+     *                              to check for milliseconds, use
+     *                              {@link Dates#isYYMDTimestampOK(String, String, String)}.
+     * @return true if the timestamp is correct, false otherwise.
+     * @see Dates#isYYMDTimestampOK(String, String, String)
+     * @see Dates#isYYMDDateOK(String, String)
+     * @see Dates#isTimeOK(String, String)
+     */
+    public static boolean isYYMDTimestampOK(final String timestamp, final String dateSeparator, final String timeSeparator, final String millisecondsSeparator) {
+        if (dateSeparator.equals(timeSeparator) || dateSeparator.equals(millisecondsSeparator) || timeSeparator.equals(millisecondsSeparator))
+            throw new IllegalArgumentException("Separators must be distincts");
+
+        String parts[] = timestamp.split(millisecondsSeparator);
+        if (parts.length > 2)
+            return false;
+        final String milliseconds;
+        if (parts.length == 1)
+            milliseconds = "0";
+        else
+            milliseconds = parts[1];
+
+        parts = parts[0].split("[\\s]+");
+        if (parts.length != 2)
+            return false;
+        final String date = parts[0];
+        final String time = parts[1];
+
+        return isYYMDDateOK(date, dateSeparator) && isTimeOK(time, timeSeparator) && representsNumber(milliseconds);
+    }
+
+    private static boolean representsNumber(final String s) {
+        return s.matches("[0-9]+");
+    }
+
+    /**
+     * Check if a timestamp, of which the date part is in the format DMYY, is correct.
+     * @param timestamp to be checked.
+     * @param dateSeparator to be used to separate the date elements (year, month, day).
+     * @param timeSeparator to be used to separate the time elements (hours, minutes, seconds).
+     * @return true if the timestamp is correct, false otherwise.
+     * @see Dates#isDMYYDateOK(String, String)
+     * @see Dates#isTimeOK(String, String)
+     */
+    public static boolean isDMYYTimestampOK(final String timestamp, final String dateSeparator, final String timeSeparator) {
+        final String[] parts = timestamp.split("[\\s]+");
+        return parts.length == 2 && isDMYYDateOK(parts[0], dateSeparator) && isTimeOK(parts[1], timeSeparator);
+    }
+
+    /**
+     * Check if a timestamp, of which the date part is in the format MDYY, is correct.
+     * @param timestamp to be checked.
+     * @param dateSeparator to be used to separate the date elements (year, month, day).
+     * @param timeSeparator to be used to separate the time elements (hours, minutes, seconds).
+     * @return true if the timestamp is correct, false otherwise.
+     * @see Dates#isMDYYDateOK(String, String)
+     * @see Dates#isTimeOK(String, String)
+     */
+    public static boolean isMDYYTimestampOK(final String timestamp, final String dateSeparator, final String timeSeparator) {
+        final String[] parts = timestamp.split("[\\s]+");
+        return parts.length == 2 && isMDYYDateOK(parts[0], dateSeparator) && isTimeOK(parts[1], timeSeparator);
     }
 }
