@@ -1,7 +1,16 @@
 package org.dbbeans.util;
 
 /**
- * ...
+ * This class it a trivial implementation of a money representation to be used with values retrieved from a database.
+ * It is mostly used, with the companion class {@link MoneyFormat}, in web applications related to sales or
+ * online shop. It is not appropriate for financial applications.<br/>
+ * In this version, negative values are not supported.<br/>
+ * Values are stored as cents, or as the smallest denomination possible for the currency concerned (cents for
+ * dollars or euros, centimes for Swiss Francs, etc.).<br/>
+ * Internally, all information is stored as long values, so there can be no rounding errors due to floating
+ * point arithmetic. This is why it is necessary to store the value as the smallest possible unit of representation
+ * for the currency that interests us (i.e., cents and not dollars).<br/>
+ * Objects of the Money class are immutable and therefore thread safe.
  */
 public class Money {
     private final long val;
@@ -9,38 +18,84 @@ public class Money {
     private final MoneyFormat format;
 
 
-    public Money(final long val, final MoneyFormat format) {
-        if (val < 0)
+    /**
+     * Creates a Money object with the appropriate value and associate a printing format to it.
+     * @param value in cents.
+     * @param format used to print the value.
+     * @throws java.lang.IllegalArgumentException if <code>value</code> is negative.
+     */
+    public Money(final long value, final MoneyFormat format) {
+        if (value < 0)
             throw new IllegalArgumentException("Negative values not accepted (for now).");
 
-        this.val = val;
+        this.val = value;
         this.format = format;
     }
 
-    public Money(final long val) {
-        this(val, MoneyFormat.getDefault());
+    /**
+     * Creates a Money object with the appropriate value and associate the default printing format to it.
+     * @param value in cents.
+     */
+    public Money(final long value) {
+        this(value, MoneyFormat.getDefault());
     }
 
-    public Money(final double val, final MoneyFormat format) {
-        this((long) (val + 0.5), format);
+    /**
+     * Creates a Money object with the appropriate value and associate a printing format to it.
+     * @param value in the main unit of the currency (i.e., dollars). The value will be stored as a long,
+     *              representing the smallest unit of the currency (i.e., cents). The value will be rounded up
+     *              or down if necessary (.5 goes up).
+     * @param format used to print the value.
+     * @throws java.lang.IllegalArgumentException if <code>value</code> is negative.
+     */
+    public Money(final double value, final MoneyFormat format) {
+        this((long) (value + 0.5), format);
     }
 
-    public Money(final double val) {
-        this(val, MoneyFormat.getDefault());
+    /**
+     * Creates a Money object with the appropriate value and associate the default printing format to it.
+     * @param value in the main unit of the currency (i.e., dollars). The value will be stored as a long,
+     *              representing the smallest unit of the currency (i.e., cents). The value will be rounded up
+     *              or down if necessary (.5 goes up).
+     */
+    public Money(final double value) {
+        this(value, MoneyFormat.getDefault());
     }
 
-    public Money(final String val, final MoneyFormat format) {
-        this(format.getVal(val), format);
+    /**
+     * Creates a Money object with the appropriate value and associate a printing format to it.
+     * @param value in the main unit of the currency (i.e., dollars). The String will be converted to the
+     *              internal representation as a long according to the MoneyFormat provided.
+     * @param format used to print the value.
+     * @throws java.lang.IllegalArgumentException if <code>value</code> cannot be parsed using <code>format</code>.
+     */
+    public Money(final String value, final MoneyFormat format) {
+        this(format.getVal(value), format);
     }
 
-    public Money(final String val) {
-        this(MoneyFormat.getDefault().getVal(val), MoneyFormat.getDefault());
+    /**
+     * Creates a Money object with the appropriate value and associate the default printing format to it.
+     * @param value in the main unit of the currency (i.e., dollars). The String will be converted to the
+     *              internal representation as a long according to the default MoneyFormat.
+     * @throws java.lang.IllegalArgumentException if <code>value</code> cannot be parsed using the default MoneyFormat.
+     */
+    public Money(final String value) {
+        this(MoneyFormat.getDefault().getVal(value), MoneyFormat.getDefault());
     }
 
+    /**
+     * Returns the internal representation of the value of this MoneyFormat as a long.
+     * @return he internal representation of the value of this MoneyFormat.
+     */
     public long getVal() {
         return val;
     }
 
+    /**
+     * Returns the internal representation of the value of this MoneyFormat as an int.
+     * @return he internal representation of the value of this MoneyFormat.
+     * @throws java.lang.IllegalArgumentException if the value is too big to fit in an int.
+     */
     public int getIntVal() {
         if (val > Integer.MAX_VALUE)
             throw new IllegalArgumentException("Monetary value too big to fit in an int: " + val);
@@ -48,19 +103,33 @@ public class Money {
         return (int) val;
     }
 
+    /**
+     * Returns the associated MoneyFormat.
+     * @return the associated MoneyFormat.
+     */
     public MoneyFormat getFormat() {
         return format;
     }
 
+    /**
+     * Returns the internal representation of the value of this MoneyFormat as a String.
+     * @return he internal representation of the value of this MoneyFormat.
+     */
     public String toString() {
         return format.print(val);
     }
 
-    public Money getPercent(final int percent) {
-        if (percent < 0 || percent > 100)
-            throw new IllegalArgumentException("Percentage must be comprised between 0 and 100. Incorrect value: " + percent);
+    /**
+     * Returns a certain percentage of the value of this Money object as a new Money object.
+     * @param percentage of value to be returned.
+     * @return a Money object representing <code>percentage</code> of the current Money object.
+     * @throws java.lang.IllegalArgumentException if <code>percentage</code> is not comprised between 0 and 100.
+     */
+    public Money getPercent(final int percentage) {
+        if (percentage < 0 || percentage > 100)
+            throw new IllegalArgumentException("Percentage must be comprised between 0 and 100. Incorrect value: " + percentage);
 
-        final double result = val * ((float) percent / 100);
+        final double result = val * ((float) percentage / 100);
         return new Money(Math.round(result), format);
     }
 }
