@@ -120,6 +120,21 @@ public class Strings {
     }
 
     /**
+     * Returns all the letters in a given String as an array of Strings, each String representing a letter.
+     * The concept of letter is used loosely here to refer to code points, but represented as Strings and not ints.
+     * @param string which letters should be enumerated.
+     * @return list of <code>string</code> letters.
+     */
+    public static List<String> toLetterList(final String string) {
+        List<String> letterList = new ArrayList<String>();
+
+        for (int i = 0; i < string.length(); i++)
+            letterList.add(string.substring(i, i + 1));
+
+        return letterList;
+    }
+
+    /**
      * Replace part of a String by another String.
      * @param content the String to altered.
      * @param target the part of the String to be replaced.
