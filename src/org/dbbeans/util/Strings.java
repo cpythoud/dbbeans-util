@@ -102,6 +102,24 @@ public class Strings {
     }
 
     /**
+     * Count how many time a certain substring appears inside an other string.
+     * @param string to be parsed for occurrences of the substring.
+     * @param substring which occurrences are to be counted.
+     * @return the number of occurrences of <code>substring</code> in <code>string</code>.
+     */
+    public static int occurrenceCount(final String string, final String substring) {
+        int count = 0;
+        int index = 0;
+        while (string.indexOf(substring, index) != -1) {
+            count++;
+            index = string.indexOf(substring, index) + 1;
+            if (index > string.length())
+                break;
+        }
+        return count;
+    }
+
+    /**
      * Replace part of a String by another String.
      * @param content the String to altered.
      * @param target the part of the String to be replaced.
