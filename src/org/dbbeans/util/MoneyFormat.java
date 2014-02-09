@@ -1,7 +1,6 @@
 package org.dbbeans.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,10 +23,8 @@ public class MoneyFormat {
     }
 
     public boolean isValOK(final String val) {
-        if (hasSeparator() && !separatorOK(val))
-            return false;
+        return !(hasSeparator() && !separatorOK(val)) && digitsOK(val);
 
-        return digitsOK(val);
     }
 
     private boolean hasSeparator() {
@@ -35,9 +32,7 @@ public class MoneyFormat {
     }
 
     private boolean separatorOK(final String val) {
-        if (!separatorCountOK(val))
-            return false;
-        return separatorPlaceOK(val);
+        return separatorCountOK(val) && separatorPlaceOK(val);
     }
 
     private boolean separatorCountOK(final String val) {
@@ -251,13 +246,7 @@ public class MoneyFormat {
         }
 
         private boolean elementOK(final String element) {
-            if (element.length() != 1)
-                return false;
-
-            if (element.matches("[0-9]"))
-                return false;
-
-            return true;
+            return element.length() == 1 && !element.matches("[0-9]");
         }
 
         public Builder clearDecorators() {
