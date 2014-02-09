@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ...
+ * This class is a companion to the {@link Money} class. It is used to parameter String input and output of
+ * money values.
+ * <br/>
+ * A MoneyFormat specifies how many decimal places are to be used and which characters are accepted as
+ * decimals separator and thousands decorator.
+ * <br/>
+ * MoneyFormat are created through a {@link MoneyFormat.Builder} object.
  */
 public class MoneyFormat {
 
@@ -18,13 +24,24 @@ public class MoneyFormat {
 
     private static final MoneyFormat DEFAULT_MONEY_FORMAT = (new Builder()).create();
 
+
+    /**
+     * Gets the default MoneyFormat.
+     * The default format specifies two decimals, a decimal separator that can be either a dot or a comma, and
+     * a thousands decorator that can be either a space or an apostrophe.
+     * @return the default MoneyFormat.
+     */
     public static MoneyFormat getDefault() {
         return DEFAULT_MONEY_FORMAT;
     }
 
+    /**
+     * Checks if a String can be transformed in a value according to the current MoneyFormat.
+     * @param val the String to be checked.
+     * @return true if the String <code>val</code> can be transformed into a money value, false otherwise.
+     */
     public boolean isValOK(final String val) {
         return !(hasSeparator() && !separatorOK(val)) && digitsOK(val);
-
     }
 
     private boolean hasSeparator() {
@@ -66,11 +83,17 @@ public class MoneyFormat {
         return true;
     }
 
-    public long getVal(final String s) {
-        if (!isValOK(s))
-            throw new IllegalArgumentException("Argument contains invalid characters: " + s);
+    /**
+     * Get a long value from a String representation of a money amount.
+     * @param string representation of money amount.
+     * @return money amount.
+     * @throws java.lang.IllegalArgumentException if the String cannot be parsed according to the current MoneyFormat.
+     */
+    public long getVal(final String string) {
+        if (!isValOK(string))
+            throw new IllegalArgumentException("Argument contains invalid characters: " + string);
 
-        return calcValue(removeDecorators(s));
+        return calcValue(removeDecorators(string));
     }
 
     private String removeDecorators(final String s) {
@@ -132,12 +155,21 @@ public class MoneyFormat {
         return val;
     }
 
-    public String print(final long val) {
-        if (decimals == 0)
-            return getDigitsWithSeparator(val);
+    /**
+     * Get a String representation of a money amount.
+     * @param amount to be processed.
+     * @return string representation.
+     * @throws java.lang.IllegalArgumentException if <code>amount</code> is negative.
+     */
+    public String print(final long amount) {
+        if (amount < 0)
+            throw new IllegalArgumentException("Amount cannot be negative.");
 
-        final long unitVal = val / noDecimalMultiplier;
-        final long decimalVal = val - unitVal * noDecimalMultiplier;
+        if (decimals == 0)
+            return getDigitsWithSeparator(amount);
+
+        final long unitVal = amount / noDecimalMultiplier;
+        final long decimalVal = amount - unitVal * noDecimalMultiplier;
 
         return getDigitsWithSeparator(unitVal) + decimalSeparators.get(0) + formatDecimals(decimalVal);
     }
@@ -203,6 +235,13 @@ public class MoneyFormat {
         return mul;
     }
 
+
+    /**
+     * This inner class is used to build instances of MoneyFormats.<br/>
+     * An instance of this class must be created, then setters methods are used to specify the MoneyFormat.
+     * Each setter function returns the Builder object, so function calls can be chained. Once all parameters
+     * have been set, the {@link Builder#create()} function must be called to obtain the MoneyFormat.
+     */
     public static class Builder {
         private int decimals;
 
@@ -210,6 +249,9 @@ public class MoneyFormat {
 
         private List<String> decorators;
 
+        /**
+         * Use this constructor to instantiate a Builder Object.
+         */
         public Builder() {
             decimals = 2;
 
@@ -222,6 +264,11 @@ public class MoneyFormat {
             decorators.add("'");
         }
 
+        /**
+         * Specify the decimal separator character. Only this character will be accepted as the decimal separator.
+         * @param decimals the decimal separator character.
+         * @return this Builder object.
+         */
         public Builder setDecimals(final int decimals) {
             if (decimals < 0 || decimals > 5)
                 throw new IllegalArgumentException("Number of decimal positions must be between 0 and 5.");
@@ -231,11 +278,20 @@ public class MoneyFormat {
             return this;
         }
 
+        /**
+         * Removes all accepted decimal separators from the MoneyFormat being created.
+         * @return this Builder object.
+         */
         public Builder clearDecimalSeparators() {
             decimalSeparators.clear();
             return this;
         }
 
+        /**
+         * Add a decimal separator character to the list of accepted separators.
+         * @param separator the decimal separator character.
+         * @return this Builder object.
+         */
         public Builder addDecimalSeparator(final String separator) {
             if (!elementOK(separator))
                 throw new IllegalArgumentException("Illegal decimal separator: " + separator);
@@ -249,11 +305,20 @@ public class MoneyFormat {
             return element.length() == 1 && !element.matches("[0-9]");
         }
 
+        /**
+         * Removes all accepted thousands decorators from the MoneyFormat being created.
+         * @return this Builder object.
+         */
         public Builder clearDecorators() {
             decorators.clear();
             return this;
         }
 
+        /**
+         * Add a thousands decorator character to the list of accepted decortors.
+         * @param decorator the thousands decorator character.
+         * @return this Builder object.
+         */
         public Builder addDecorator(final String decorator) {
             if (!elementOK(decorator))
                 throw new IllegalArgumentException("Illegal decorator: " + decorator);
@@ -263,6 +328,12 @@ public class MoneyFormat {
             return this;
         }
 
+        /**
+         * Creates the MoneyFormat object.
+         * @return a MoneyFormat object.
+         * @throws java.lang.IllegalArgumentException if there is any inconsistency in the specification of the
+         * MoneyFormat (missing decimal separator, decorator identical to separator, etc.)
+         */
         public MoneyFormat create() {
             for (final String sep: decimalSeparators)
                 if (decorators.contains(sep))
