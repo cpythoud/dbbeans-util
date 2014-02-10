@@ -1,18 +1,38 @@
 package org.dbbeans.util;
 
 /**
- * ...
+ * This class contains static function to help with manipulating text in an HTML/web application context.
  */
 public class HTMLText {
 
+    /**
+     * Given a String containing HTML Unicode escape sequence (like {@literal &#233;}), this function returns
+     * a similar string with all Unicode escape sequence replaced by the corresponding named entity
+     * (like {@literal &eacute;}).
+     * @param text to be processed.
+     * @return a string with Unicode escape sequences replaced by the corresponding named entities.
+     */
     public static String numberToEscape(final String text) {
         return swapCharEntities(text, NUMBER_PATTERN, ESCAPE_PATTERN);
     }
 
+    /**
+     * Given a String containing accented characters (like &eacute;), this function returns
+     * a similar string with all accented characters replaced by the corresponding named entity
+     * (like {@literal &eacute;}).
+     * @param text to be processed.
+     * @return a string with accented characters replaced by the corresponding named entities.
+     */
     public static String accentsToEscape(final String text) {
         return swapCharEntities(text, ACCENTED_CHARACTERS, ESCAPE_PATTERN);
     }
 
+    /**
+     * Given a String containing named entities (like {@literal &eacute;}), this function returns
+     * a similar string with all named entities replaced by the corresponding accented character (like &eacute;).
+     * @param text to be processed.
+     * @return a string with named entities replaced by the corresponding accented characters.
+     */
     public static String escapeToAccents(final String text) {
         return swapCharEntities(text, ESCAPE_PATTERN, ACCENTED_CHARACTERS);
     }
