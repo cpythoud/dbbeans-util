@@ -1,6 +1,7 @@
 package org.dbbeans.util;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -220,7 +221,7 @@ public class Dates {
 
     /**
      * Transform a String in a {@link java.sql.Time} object. The separator between the time elements
-     * (hours, minutes, seconds) must be specified
+     * (hours, minutes, seconds) must be specified.
      * @param string to be converted.
      * @param separator used to separate the time elements.
      * @return a Time object.
@@ -238,5 +239,62 @@ public class Dates {
         cal.set(Calendar.SECOND, Integer.valueOf(parts[2]));
 
         return new Time(cal.getTimeInMillis());
+    }
+
+    /**
+     * Transform a String in a {@link java.sql.Timestamp} object. The separators between the date elements
+     * (years, month, days) and time elements (hours, minutes, seconds) must be specified.
+     * @param string to be converted.
+     * @param dateSeparator to separate date elements.
+     * @param timeSeparator to separate time elements.
+     * @return a Timestamp object.
+     */
+    public static Timestamp getTimestampFromYYMD(final String string, final String dateSeparator, final String timeSeparator) {
+        return getTimestampFromYYMD(string, dateSeparator, timeSeparator, "\\.");
+    }
+
+    /**
+     * Transform a String in a {@link java.sql.Timestamp} object. The separators between the date elements
+     * (years, month, days) and time elements (hours, minutes, seconds), and between time and milliseconds,
+     * must be specified.
+     * @param string to be converted.
+     * @param dateSeparator to separate date elements.
+     * @param timeSeparator to separate time elements.
+     * @param millisecondsSeparator to separate time and milliseconds.
+     * @return a Timestamp object.
+     */
+    public static Timestamp getTimestampFromYYMD(final String string, final String dateSeparator, final String timeSeparator, final String millisecondsSeparator) {
+        final String[] milliParts = string.split(millisecondsSeparator);
+        if (milliParts.length > 2)
+            throw new IllegalArgumentException("Format invalide : doit être yyyy" + dateSeparator + "[m]m" + dateSeparator + "[d]d [h]h" + timeSeparator + "[m]m" + timeSeparator + "[s]s[" + millisecondsSeparator + "mmm], reçu " + string);
+        final String milliseconds;
+        if (milliParts.length == 1)
+            milliseconds = "0";
+        else
+            milliseconds = milliParts[1];
+
+        final String[] parts = milliParts[0].split("[\\s]+");
+        if (parts.length != 2)
+            throw new IllegalArgumentException("Format invalide : doit être yyyy" + dateSeparator + "[m]m" + dateSeparator + "[d]d [h]h" + timeSeparator + "[m]m" + timeSeparator + "[s]s[" + millisecondsSeparator + "mmm], reçu " + string);
+
+        final String[] dateParts = parts[0].split(dateSeparator);
+        if (dateParts.length != 3)
+            throw new IllegalArgumentException("Format de date invalide : doit être yyyy" + dateSeparator + "[m]m" + dateSeparator + "[d]d, reçu " + parts[0]);
+        if (!isDateOK(dateParts[2], dateParts[1], dateParts[0]))
+            throw new IllegalArgumentException("La date fournie (" + parts[0] + ") est invalide !");
+
+        final String[] timeParts = parts[1].split(timeSeparator);
+        if (timeParts.length != 3)
+            throw new IllegalArgumentException("Format d'heure invalide : doit être [h]h" + timeSeparator + "[m]m" + timeSeparator + "[s]s, reçu " + parts[1]);
+        if (!isTimeOK(timeParts[0], timeParts[1], timeParts[2]))
+            throw new IllegalArgumentException("L'heure fournie (" + string + ") est invalide !");
+
+        Calendar cal = new GregorianCalendar(Integer.valueOf(dateParts[0]), Integer.valueOf(dateParts[1]) - 1, Integer.valueOf(dateParts[2]));
+        cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(timeParts[0]));
+        cal.set(Calendar.MINUTE, Integer.valueOf(timeParts[1]));
+        cal.set(Calendar.SECOND, Integer.valueOf(timeParts[2]));
+        cal.set(Calendar.MILLISECOND, Integer.valueOf(milliseconds));
+
+        return new Timestamp(cal.getTimeInMillis());
     }
 }
