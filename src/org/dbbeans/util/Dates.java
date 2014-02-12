@@ -1,5 +1,6 @@
 package org.dbbeans.util;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
@@ -217,6 +218,24 @@ public class Dates {
     public static boolean isMDYYTimestampOK(final String timestamp, final String dateSeparator, final String timeSeparator) {
         final String[] parts = timestamp.split("[\\s]+");
         return parts.length == 2 && isMDYYDateOK(parts[0], dateSeparator) && isTimeOK(parts[1], timeSeparator);
+    }
+
+    /**
+     * Transform a String in a {@link java.sql.Date} object. The separator between the time elements
+     * (hours, minutes, seconds in this order) must be specified.
+     * @param string to be converted.
+     * @param separator used to separate the time elements.
+     * @return a Date object.
+     */
+    public static Date getDateFromYYMD(final String string, final String separator) {
+        final String[] parts = string.split(separator);
+        if (parts.length != 3)
+            throw new IllegalArgumentException("Format invalide : doit être [m]m" + separator + "[d]d" + separator + "yyyy, reçu " + string);
+        if (!isDateOK(parts[2], parts[1], parts[0]))
+            throw new IllegalArgumentException("La date fournie (" + string + ") est invalide !");
+
+        Calendar cal = new GregorianCalendar(Integer.valueOf(parts[0]), Integer.valueOf(parts[1]) - 1, Integer.valueOf(parts[2]));
+        return new Date(cal.getTimeInMillis());
     }
 
     /**
