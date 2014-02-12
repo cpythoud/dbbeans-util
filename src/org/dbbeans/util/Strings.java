@@ -102,6 +102,66 @@ public class Strings {
     }
 
     /**
+     * Transforms a String in an int value. If the String is null or cannot be converted to an int, returns 0.
+     * @param string to be converted.
+     * @return the int value represented by the String or 0 if the value cannot be extracted.
+     */
+    public static int getIntVal(final String string) {
+        int val = 0;
+        try {
+            val = Integer.valueOf(string);
+        } catch (final NumberFormatException nfex) {
+            // val = 0 !
+        }
+        return val;
+    }
+
+    /**
+     * Transforms a String in a long value. If the String is null or cannot be converted to a long, returns 0.
+     * @param string to be converted.
+     * @return the long value represented by the String or 0 if the value cannot be extracted.
+     */
+    public static long getLongVal(final String string) {
+        long val = 0;
+        try {
+            val = Long.valueOf(string);
+        } catch (final NumberFormatException nfex) {
+            // val = 0 !
+        }
+        return val;
+    }
+
+    /**
+     * Transforms a String in a float value. If the String is null or cannot be converted to a float, returns 0.
+     * @param string to be converted.
+     * @return the float value represented by the String or 0 if the value cannot be extracted.
+     */
+    public static float getFloatVal(final String string) {
+        float val = 0.0f;
+        try {
+            val = Float.valueOf(string);
+        } catch (final NumberFormatException nfex) {
+            // val = 0 !
+        }
+        return val;
+    }
+
+    /**
+     * Transforms a String in a double value. If the String is null or cannot be converted to a double, returns 0.
+     * @param string to be converted.
+     * @return the double value represented by the String or 0 if the value cannot be extracted.
+     */
+    public static double getDoubleVal(final String string) {
+        double val = 0.0d;
+        try {
+            val = Double.valueOf(string);
+        } catch (final NumberFormatException nfex) {
+            // val = 0 !
+        }
+        return val;
+    }
+
+    /**
      * Count how many time a certain substring appears inside an other string.
      * @param string to be parsed for occurrences of the substring.
      * @param substring which occurrences are to be counted.
