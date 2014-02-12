@@ -1,5 +1,7 @@
 package org.dbbeans.util;
 
+import java.sql.Time;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -214,5 +216,27 @@ public class Dates {
     public static boolean isMDYYTimestampOK(final String timestamp, final String dateSeparator, final String timeSeparator) {
         final String[] parts = timestamp.split("[\\s]+");
         return parts.length == 2 && isMDYYDateOK(parts[0], dateSeparator) && isTimeOK(parts[1], timeSeparator);
+    }
+
+    /**
+     * Transform a String in a {@link java.sql.Time} object. The separator between the time elements
+     * (hours, minutes, seconds) must be specified
+     * @param string to be converted.
+     * @param separator used to separate the time elements.
+     * @return a Time object.
+     */
+    public static Time getTimeFromString(final String string, final String separator) {
+        final String[] parts = string.split(separator);
+        if (parts.length != 3)
+            throw new IllegalArgumentException("Format invalide : doit être [h]h" + separator + "[m]m" + separator + "[s]s, reçu " + string);
+        if (!isTimeOK(parts[0], parts[1], parts[2]))
+            throw new IllegalArgumentException("L'heure fournie (" + string + ") est invalide !");
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(parts[0]));
+        cal.set(Calendar.MINUTE, Integer.valueOf(parts[1]));
+        cal.set(Calendar.SECOND, Integer.valueOf(parts[2]));
+
+        return new Time(cal.getTimeInMillis());
     }
 }
