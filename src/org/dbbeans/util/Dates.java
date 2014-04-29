@@ -14,6 +14,30 @@ import java.util.GregorianCalendar;
 public class Dates {
 
     /**
+     * Returns a java.sql.Date initialized with the current date.
+     * @return a java.sql.Date initialized with the current date.
+     */
+    public static Date getCurrentDate() {
+        return new Date((new java.util.Date()).getTime());
+    }
+
+    /**
+     * Returns a java.sql.Time initialized with the current time.
+     * @return a java.sql.Time initialized with the current time.
+     */
+    public static Time getCurrentTime() {
+        return new Time((new java.util.Date()).getTime());
+    }
+
+    /**
+     * Returns a java.sql.Timestamp initialized with the current date and time.
+     * @return a java.sql.Timestamp initialized with the current date and time.
+     */
+    public static Timestamp getCurrentTimestamp() {
+        return new Timestamp((new java.util.Date()).getTime());
+    }
+
+    /**
      * Check if a date is correct.
      * @param day of the month (1-31)
      * @param month of the year (1-12)

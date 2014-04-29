@@ -11,10 +11,6 @@ getSeconds
 (getMillis)
 getTimeObject ?
 
-getCurrentDate
-getCurrentTime
-getCurrentTimestamp
-
 getCurrentYear
 
 isEndDateBeforeStartDate
