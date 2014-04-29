@@ -1,0 +1,76 @@
+Dates:
+------
+
+getDay
+getMonth
+getYear
+getIsoTodayDate
+getHours
+getMinutes
+getSeconds
+(getMillis)
+getTimeObject ?
+
+getCurrentDate
+getCurrentTime
+getCurrentTimestamp
+
+getCurrentYear
+
+isEndDateBeforeStartDate
+
+getMeaningfulTimeStamp
+
+getStringMDYY
+getStringMDYY
+getStringYYMD
+getDateFromDMYY
+
+representsNumber ?  > Strings ?
+
+getDateFromFixedYYYYMMDD ?
+getDateFromFixedYYMMDD   ?
+getDateFromFixedYYMMDD   ?
+
+getFullYear
+
+isLeapYear
+has53weeks
+
+add
+substract
+
+getFormattedDuration
+
+getTwoDigitsString ?  > Strings ?
+
+print
+
+
+
+Strings:
+--------
+
+occurenceCount
+
+extractBetweenDelimiters
+
+getIntegerList
+
+shortenTextOnWordBoundary
+
+stringCharactersOK
+
+getUnaccentedString
+
+replace
+replaceMany
+
+join
+
+normalizeText
+
+getDosPrintWriter ?  > DOS class ?
+dosPrintLn  ? id.
+
+
