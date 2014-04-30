@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * This class is used to validate timestamp input.
  * Its functions accept dates in various format and expect times as 24 hours daytime in hours, minutes and seconds.
- * Milliseconds are not supported.
+ * Milliseconds are not supported. Please use the removeMillis static functions if you need to process timestamps strings with milliseconds.
  * This class is mostly used in web applications.
  * @see SimpleInputDateFormat
  * @see SimpleInputTimeFormat
@@ -98,6 +98,33 @@ public class SimpleInputTimestampFormat {
         }
 
         return false;
+    }
+
+    /**
+     * Removes the milliseconds at the end of a String representing a Timestamp. Uses the standard dot separator to
+     * separate the seconds from the milliseconds.
+     * @param timestampStr String representing a Timestamp.
+     * @return a String representation of a Timestamp without milliseconds.
+     */
+    public static String removeMillis(final String timestampStr) {
+        return removeMillis(timestampStr, ".");
+    }
+
+    /**
+     * Removes the milliseconds at the end of a String representing a Timestamp.
+     * @param timestampStr String representing a Timestamp.
+     * @param separator used between seconds and milliseconds.
+     * @return a String representation of a Timestamp without milliseconds.
+     */
+    public static String removeMillis(final String timestampStr, final String separator) {
+        final int index = timestampStr.lastIndexOf(separator);
+        if (index == -1)
+            throw new IllegalArgumentException("Could not find separator. Timestamp String might not contain milliseconds. Received: " + timestampStr);
+
+        if (!timestampStr.substring(index + 1).matches("[0-9]+"))
+            throw new IllegalArgumentException("Characters other than digits after separator. Timestamp String might be incorrect. Received: " + timestampStr);
+
+        return timestampStr.substring(0, index);
     }
 
     private final SimpleInputDateFormat.ElementOrder order;
