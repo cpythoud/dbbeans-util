@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -36,6 +39,19 @@ public class Dates {
     public static Timestamp getCurrentTimestamp() {
         return new Timestamp((new java.util.Date()).getTime());
     }
+
+    /**
+     * Returns a number that can be used as a timestamp. Useful for recording creation dates or generating
+     * time dependant, unique, names. (For temporary files or directories for example.)
+     * @return a long. Its first four digits represent the current year, the next two the current month, the next
+     * two the current day of month, the next two the current hour, the next two the current minutes, the next
+     * two the current seconds and the next three the current milliseconds.
+     */
+    public static long getMeaningfulTimeStamp() {
+        return Long.valueOf(MTS_DATE_FORMAT.format(new java.util.Date()));
+    }
+
+    private static final DateFormat MTS_DATE_FORMAT = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
     /**
      * Check if a date is correct.

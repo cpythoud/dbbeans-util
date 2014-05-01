@@ -15,8 +15,6 @@ getCurrentYear
 
 isEndDateBeforeStartDate
 
-getMeaningfulTimeStamp
-
 getStringMDYY
 getStringMDYY
 getStringYYMD
