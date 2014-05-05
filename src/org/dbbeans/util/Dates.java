@@ -261,8 +261,8 @@ public class Dates {
     }
 
     /**
-     * Transform a String in a {@link java.sql.Date} object. The separator between the time elements
-     * (hours, minutes, seconds in this order) must be specified.
+     * Transform a String in a {@link java.sql.Date} object. The separator between the date elements
+     * (year, month, day in this order) must be specified.
      * @param string to be converted.
      * @param separator used to separate the time elements.
      * @return a Date object.
@@ -270,9 +270,9 @@ public class Dates {
     public static Date getDateFromYYMD(final String string, final String separator) {
         final String[] parts = string.split(separator);
         if (parts.length != 3)
-            throw new IllegalArgumentException("Format invalide : doit être [m]m" + separator + "[d]d" + separator + "yyyy, reçu " + string);
+            throw new IllegalArgumentException("Invalid format: must be  yyyy" + separator + "[m]m" + separator + "[d]d, received " + string);
         if (!isDateOK(parts[2], parts[1], parts[0]))
-            throw new IllegalArgumentException("La date fournie (" + string + ") est invalide !");
+            throw new IllegalArgumentException("Submitted date (" + string + ") is invalid.");
 
         Calendar cal = new GregorianCalendar(Integer.valueOf(parts[0]), Integer.valueOf(parts[1]) - 1, Integer.valueOf(parts[2]));
         return new Date(cal.getTimeInMillis());
@@ -288,9 +288,9 @@ public class Dates {
     public static Time getTimeFromString(final String string, final String separator) {
         final String[] parts = string.split(separator);
         if (parts.length != 3)
-            throw new IllegalArgumentException("Format invalide : doit être [h]h" + separator + "[m]m" + separator + "[s]s, reçu " + string);
+            throw new IllegalArgumentException("Invalid format: must be   [h]h" + separator + "[m]m" + separator + "[s]s, received " + string);
         if (!isTimeOK(parts[0], parts[1], parts[2]))
-            throw new IllegalArgumentException("L'heure fournie (" + string + ") est invalide !");
+            throw new IllegalArgumentException("Submitted time (" + string + ") is invalid.");
 
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(parts[0]));
