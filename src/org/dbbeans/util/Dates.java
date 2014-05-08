@@ -279,6 +279,42 @@ public class Dates {
     }
 
     /**
+     * Transform a String in a {@link java.sql.Date} object. The separator between the date elements
+     * (day, month, year in this order) must be specified.
+     * @param string to be converted.
+     * @param separator used to separate the time elements.
+     * @return a Date object.
+     */
+    public static Date getDateFromDMYY(final String string, final String separator) {
+        final String[] parts = string.split(separator);
+        if (parts.length != 3)
+            throw new IllegalArgumentException("Invalid format: must be  [d]d" + separator + "[m]m" + separator + "yyyy, received " + string);
+        if (!isDateOK(parts[0], parts[1], parts[2]))
+            throw new IllegalArgumentException("Submitted date (" + string + ") is invalid.");
+
+        Calendar cal = new GregorianCalendar(Integer.valueOf(parts[2]), Integer.valueOf(parts[1]) - 1, Integer.valueOf(parts[0]));
+        return new Date(cal.getTimeInMillis());
+    }
+
+    /**
+     * Transform a String in a {@link java.sql.Date} object. The separator between the date elements
+     * (month, day, year in this order) must be specified.
+     * @param string to be converted.
+     * @param separator used to separate the time elements.
+     * @return a Date object.
+     */
+    public static Date getDateFromMDYY(final String string, final String separator) {
+        final String[] parts = string.split(separator);
+        if (parts.length != 3)
+            throw new IllegalArgumentException("Invalid format: must be  yyyy" + separator + "[d]d" + separator + "[m]m, received " + string);
+        if (!isDateOK(parts[1], parts[0], parts[2]))
+            throw new IllegalArgumentException("Submitted date (" + string + ") is invalid.");
+
+        Calendar cal = new GregorianCalendar(Integer.valueOf(parts[2]), Integer.valueOf(parts[0]) - 1, Integer.valueOf(parts[1]));
+        return new Date(cal.getTimeInMillis());
+    }
+
+    /**
      * Transform a String in a {@link java.sql.Time} object. The separator between the time elements
      * (hours, minutes, seconds) must be specified.
      * @param string to be converted.
