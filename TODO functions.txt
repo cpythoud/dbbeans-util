@@ -1,9 +1,6 @@
 Dates:
 ------
 
-getDay
-getMonth
-getYear
 getIsoTodayDate
 getHours
 getMinutes

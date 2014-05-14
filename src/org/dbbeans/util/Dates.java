@@ -17,6 +17,33 @@ import java.util.GregorianCalendar;
 public class Dates {
 
     /**
+     * Given a java.sql.Date, returns the day of month.
+     * @param date, a java.sql.Date.
+     * @return day of month.
+     */
+    public static int getDay(final Date date) {
+        return Integer.valueOf(date.toString().substring(8, 10));
+    }
+
+    /**
+     * Given a java.sql.Date, returns the month.
+     * @param date, a java.sql.Date.
+     * @return month.
+     */
+    public static int getMonth(final Date date) {
+        return Integer.valueOf(date.toString().substring(5, 7));
+    }
+
+    /**
+     * Given a java.sql.Date, returns the year.
+     * @param date, a java.sql.Date.
+     * @return year.
+     */
+    public static int getYear(final Date date) {
+        return Integer.valueOf(date.toString().substring(0, 4));
+    }
+
+    /**
      * Returns a java.sql.Date initialized with the current date.
      * @return a java.sql.Date initialized with the current date.
      */
