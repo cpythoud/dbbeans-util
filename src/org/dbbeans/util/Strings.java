@@ -195,6 +195,26 @@ public class Strings {
     }
 
     /**
+     * Replace all accented characters in a String with the unaccented equivalent. As the equivalent is language
+     * dependent, the list of accented characters and their corresponding unaccented characters must be provided
+     * in the form of two Strings of equal length. This function does not support (yet) the substitution of one
+     * accented character by two or more characters, as it might happen in German for example.
+     * @param string to be unaccented.
+     * @param accentedCharacters list of accented characters.
+     * @param unaccentedCharacters list of corresponding unaccented characters.
+     * @return unaccented version of string passed as a parameter.
+     * @throws java.lang.IllegalArgumentException if the two lists of characters are not of equal length.
+     */
+    public static String getUnaccentedString(final String string, final String accentedCharacters, final String unaccentedCharacters) {
+        if (accentedCharacters.length() != unaccentedCharacters.length())
+            throw new IllegalArgumentException("length mismatch");
+        String result = string;
+        for (int i = 0; i < accentedCharacters.length(); i++)
+            result = result.replaceAll(accentedCharacters.substring(i, i+1), unaccentedCharacters.substring(i, i+1));
+        return result;
+    }
+
+    /**
      * Replace part of a String by another String.
      * @param content the String to altered.
      * @param target the part of the String to be replaced.
