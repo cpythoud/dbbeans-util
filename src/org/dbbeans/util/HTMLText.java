@@ -1,5 +1,8 @@
 package org.dbbeans.util;
 
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
+
 /**
  * This class contains static function to help with manipulating text in an HTML/web application context.
  */
@@ -45,6 +48,36 @@ public class HTMLText {
         for (int i = 0; i < max; i++)
             result = result.replaceAll(source[i], target[i]);
         return result;
+    }
+
+    /**
+     * Returns a String where the following characters are escaped to their HTML entity equivalents: &lt;, &gt;, ", ', \.
+     * @param text to be escaped.
+     * @return escaped version of text.
+     */
+    public static String escapeHTMLtext(final String text) {
+        final StringBuilder result = new StringBuilder();
+        final StringCharacterIterator iterator = new StringCharacterIterator(text);
+        char character =  iterator.current();
+        while (character != CharacterIterator.DONE ){
+            if (character == '<') {
+                result.append("&lt;");
+            } else if (character == '>') {
+                result.append("&gt;");
+            } else if (character == '\"') {
+                result.append("&quot;");
+            } else if (character == '\'') {
+                result.append("&#039;");
+            } else if (character == '\\') {
+                result.append("&#092;");
+            } else if (character == '&') {
+                result.append("&amp;");
+            } else {
+                result.append(character);
+            }
+            character = iterator.next();
+        }
+        return result.toString();
     }
 
     private final static String[] NUMBER_PATTERN = {
