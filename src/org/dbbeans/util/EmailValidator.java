@@ -68,10 +68,10 @@ public class EmailValidator {
     /**
      * Regex pattern for characters allowed in local part.
      */
-    public static final Pattern ALLOWED_CHARS_IN_LOCAL_PART = Pattern.compile("[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+");
+    public static final Pattern ALLOWED_CHARS_IN_LOCAL_PART = Pattern.compile("[A-Za-z0-9!#$%&'*+/=?^_`{|}~\\-]+");
 
     /**
      * Regex pattern for characters allowed in domain part.
      */
-    public static final Pattern ALLOWED_CHARS_IN_DOMAIN_PART = Pattern.compile("[A-Za-z0-9]+");
+    public static final Pattern ALLOWED_CHARS_IN_DOMAIN_PART = Pattern.compile("[A-Za-z0-9\\-]+");
 }
