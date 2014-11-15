@@ -195,6 +195,39 @@ public class Strings {
     }
 
     /**
+     * Scan a String for a pair of delimiters and returns all occurences of substrings between these delimiters.
+     * @param string to be scanned.
+     * @param startDelimiter, can be identical to endDelimiter or different.
+     * @param endDelimiter, can be identical to startDelimiter of different.
+     * @return a list of the substrings that can be found in the passed string between the specified delimiters.
+     * @throws IllegalArgumentException if the start delimiter is not closed (i.e., there is no end delimiter)
+     * or if a second start delimiter appears before an end delimiter (this restriction does of course not
+     * apply if start and end delimiter are identical).
+     */
+    public static List<String> extractBetweenDelimiters(final String string, final String startDelimiter, final String endDelimiter) {
+        final List<String> results = new ArrayList<String>();
+
+        int index = 0;
+        while (index < string.length()) {
+            final int startIdx = string.indexOf(startDelimiter, index);
+            if (startIdx == -1)
+                break;
+
+            final int endIdx = string.indexOf(endDelimiter, startIdx + startDelimiter.length());
+            if (endIdx == -1)
+                throw new IllegalArgumentException("Missing corresponding end delimiter in String.");
+
+            final String result = string.substring(startIdx + startDelimiter.length(), endIdx);
+            if (result.contains(startDelimiter))
+                throw new IllegalArgumentException("Nested delimiters not allowed.");
+            results.add(result);
+            index = endIdx + endDelimiter.length();
+        }
+
+        return results;
+    }
+
+    /**
      * Replace all accented characters in a String with the unaccented equivalent. As the equivalent is language
      * dependent, the list of accented characters and their corresponding unaccented characters must be provided
      * in the form of two Strings of equal length. This function does not support (yet) the substitution of one

@@ -42,10 +42,6 @@ print
 Strings:
 --------
 
-occurenceCount
-
-extractBetweenDelimiters
-
 getIntegerList
 
 shortenTextOnWordBoundary
