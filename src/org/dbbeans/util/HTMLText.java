@@ -9,6 +9,22 @@ import java.text.StringCharacterIterator;
 public class HTMLText {
 
     /**
+     * Replace all newlines in a string by the html tag &lt;br&gt;
+     * @param string to be converted
+     * @return a string with all new lines replaced by the &lt;br&gt; tag
+     */
+    public static String linefeed2br(final String string) {
+        final String[] lines = string.split("\\\n");
+        final StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < lines.length - 1; i++) {
+            buf.append(lines[i]);
+            buf.append("<br/>");
+        }
+        buf.append(lines[lines.length - 1]);
+        return buf.toString();
+    }
+
+    /**
      * Given a String containing HTML Unicode escape sequence (like {@literal &#233;}), this function returns
      * a similar string with all Unicode escape sequence replaced by the corresponding named entity
      * (like {@literal &eacute;}).
