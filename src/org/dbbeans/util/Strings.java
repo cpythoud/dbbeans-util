@@ -444,4 +444,49 @@ public class Strings {
         return buf.toString();
     }
 
+    /**
+     * Takes a long or compatible value and returns a string representing that value that starts with as many zeros
+     * as necessary to reach the count of characters specified by the digits parameter.
+     * @param value to be displayed with leading zeros.
+     * @param digits how many digits to represent the value (2-18)
+     * @return a String representing value, with leading zeros.
+     * @throws java.lang.IllegalArgumentException if value is zero or negative, or if value cannot be represented
+     * with the number of digits specified by <code>digits</code> or less.
+     */
+    public static String zeroFill(final long value, final int digits) {
+        if (value < 1)
+            throw new IllegalArgumentException("Illegal value " + value + " < 1");
+        if (digits < 2 || digits > 18)
+            throw new IllegalArgumentException("Illegal digits number: " + digits + ", must be between 2 and 19.");
+
+        final long maxVal = pow10(digits);
+
+        if (value > maxVal)
+            throw new IllegalArgumentException("Illegal value " + value + " > " + maxVal);
+
+        final StringBuilder buf = new StringBuilder();
+        long curMax = maxVal;
+        for (int i = digits; i >= 0; i--) {
+            curMax = curMax / 10;
+            if (value >= curMax)
+                break;
+            else
+                buf.append("0");
+        }
+        buf.append(value);
+
+        return buf.toString();
+    }
+
+    private static long pow10(final int power) {
+        return recursivePow10(10, power);
+    }
+
+    private static long recursivePow10(final long base, final int power) {
+        if (power == 1)
+            return base;
+
+        return recursivePow10(base * 10, power - 1);
+    }
+
 }
