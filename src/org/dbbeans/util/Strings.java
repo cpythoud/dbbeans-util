@@ -450,11 +450,11 @@ public class Strings {
      * @param value to be displayed with leading zeros.
      * @param digits how many digits to represent the value (2-18)
      * @return a String representing value, with leading zeros.
-     * @throws java.lang.IllegalArgumentException if value is zero or negative, or if value cannot be represented
+     * @throws java.lang.IllegalArgumentException if value is negative, or if value cannot be represented
      * with the number of digits specified by <code>digits</code> or less.
      */
     public static String zeroFill(final long value, final int digits) {
-        if (value < 1)
+        if (value < 0)
             throw new IllegalArgumentException("Illegal value " + value + " < 1");
         if (digits < 2 || digits > 18)
             throw new IllegalArgumentException("Illegal digits number: " + digits + ", must be between 2 and 19.");
