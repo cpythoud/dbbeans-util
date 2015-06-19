@@ -478,6 +478,17 @@ public class Strings {
         return buf.toString();
     }
 
+    /**
+     * Takes one String and return it after removing all new line (whatever the platform your program is running on)
+     * and tab characters. This function was added to facilitate string related unit test in a multi platform
+     * context.
+     * @param string to be stripped of new lines and tabs
+     * @return same string without new lines and tabs
+     */
+    public static String putOnOneLineNoTabs(final String string) {
+        return string.replaceAll("\\n|\\r\\n|\\r|\\t", "");
+    }
+
     private static long pow10(final int power) {
         return recursivePow10(10, power);
     }
