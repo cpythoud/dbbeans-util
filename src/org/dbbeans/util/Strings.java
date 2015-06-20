@@ -228,6 +228,45 @@ public class Strings {
     }
 
     /**
+     * Scan a String for a pair of delimiters and returns all occurences of substrings between these delimiters.
+     * This functions works like {@link #extractBetweenDelimiters(String, String, String)}, but never throws
+     * an IllegalArgumentException if there is a problem with the delimiter. This function can be useful to
+     * process user input in some cases, but in general {@link #extractBetweenDelimiters(String, String, String)}
+     * should be preferred.
+     * @param string to be scanned.
+     * @param startDelimiter, can be identical to endDelimiter or different.
+     * @param endDelimiter, can be identical to startDelimiter of different.
+     * @return a list of the substrings that can be found in the passed string between the specified delimiters.
+     * @see #extractBetweenDelimiters(String, String, String)
+     */
+    public static List<String> lenientExtractBetweenDelimiters(
+            final String string,
+            final String startDelimiter,
+            final String endDelimiter)
+    {
+        final List<String> results = new ArrayList<String>();
+
+        int index = 0;
+        while (index < string.length()) {
+            final int startIdx = string.indexOf(startDelimiter, index);
+            if (startIdx == -1)
+                break;
+
+            final int endIdx = string.indexOf(endDelimiter, startIdx + startDelimiter.length());
+            if (endIdx == -1)
+                break;
+
+            final String result = string.substring(startIdx + startDelimiter.length(), endIdx);
+            index = endIdx + endDelimiter.length();
+            if (result.contains(startDelimiter))
+                continue;
+            results.add(result);
+        }
+
+        return results;
+    }
+
+    /**
      * Replace all accented characters in a String with the unaccented equivalent. As the equivalent is language
      * dependent, the list of accented characters and their corresponding unaccented characters must be provided
      * in the form of two Strings of equal length. This function does not support (yet) the substitution of one
