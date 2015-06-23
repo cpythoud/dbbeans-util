@@ -15,9 +15,28 @@ public class EmailValidator {
     /**
      * Validate e-mail address.
      * @param email address to be validated.
+     * @return true if the e-mail address validates, false otherwise.
+     */
+    public static boolean validate(final String email) {
+        return validate(email, false);
+    }
+
+    /**
+     * Validate e-mail address.
+     * @param email address to be validated.
      * @param allowIpForDomain if true authorize IPv4 addresses in lieu of domain name (not recommended).
-     * @param extensiveTldValidation if true do extensive validation of top-level domain name in TLD (mostly
-     * country specific TLD).
+     * @return true if the e-mail address validates, false otherwise.
+     */
+    public static boolean validate(final String email, final boolean allowIpForDomain) {
+        return validate(email, allowIpForDomain, false);
+    }
+
+    /**
+     * Validate e-mail address.
+     * @param email address to be validated.
+     * @param allowIpForDomain if true authorize IPv4 addresses in lieu of domain name (not recommended).
+     * @param extensiveTldValidation (has no effect anymore, kept for backward compatibility, when maintaining
+     *                               a list of current tlds was actually doable before ICANN went crazy).
      * @return true if the e-mail address validates, false otherwise.
      */
     public static boolean validate(final String email, final boolean allowIpForDomain, final boolean extensiveTldValidation) {
@@ -47,12 +66,14 @@ public class EmailValidator {
             if (!ALLOWED_CHARS_IN_DOMAIN_PART.matcher(part).matches())
                 return false;
 
-        final String tld = domainParts[domainParts.length - 1];
+        /*final String tld = domainParts[domainParts.length - 1];
         if (tld.length() == 2) {
             return !extensiveTldValidation || TLDs.isCountryTLD(tld);
         }
 
-        return TLDs.isGenericTLD(tld) || TLDs.isUSATLD(tld);
+        return TLDs.isGenericTLD(tld) || TLDs.isUSATLD(tld);*/
+
+        return true;
     }
 
     /**

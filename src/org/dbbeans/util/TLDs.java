@@ -7,8 +7,9 @@ import java.util.List;
 /**
  * This class contains static functions to check the top level part of domain names.
  * It is optionally used with the EmailValidator} class.
- * WARNING: this class does not know (yet) about the new TLDs released in February 2014.
+ * WARNING: this class does not know about the new TLDs released in February 2014.
  */
+@Deprecated
 public class TLDs {
 
     /**
