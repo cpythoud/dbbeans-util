@@ -1,5 +1,10 @@
 package org.dbbeans.util;
 
+import org.apache.commons.lang3.text.translate.AggregateTranslator;
+import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
+import org.apache.commons.lang3.text.translate.EntityArrays;
+import org.apache.commons.lang3.text.translate.LookupTranslator;
+
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 
@@ -43,8 +48,14 @@ public class HTMLText {
      * @return a string with accented characters replaced by the corresponding named entities.
      */
     public static String accentsToEscape(final String text) {
-        return swapCharEntities(text, ACCENTED_CHARACTERS, ESCAPE_PATTERN);
+        return HTMl_ACCENTED_CHARACTERS_ESCAPE.translate(text);
     }
+
+    private static final CharSequenceTranslator HTMl_ACCENTED_CHARACTERS_ESCAPE =
+            new AggregateTranslator(
+                    new LookupTranslator(EntityArrays.ISO8859_1_ESCAPE()),
+                    new LookupTranslator(EntityArrays.HTML40_EXTENDED_ESCAPE())
+            );
 
     /**
      * Given a String containing named entities (like {@literal &eacute;}), this function returns
