@@ -288,12 +288,13 @@ public class Strings {
 
     /**
      * Replace part of a String by another String.
-     * @param content the String to altered.
+     * @param content the String to be altered.
      * @param target the part of the String to be replaced.
      * @param replacement the String to use as a replacement.
      * @return a new String identical to <code>content</code> except where <code>target</code> is replaced by
      * <code>replacement</code>.
      * @see Strings#replaceMany(String, java.util.Map)
+     * @see Strings#regexReplace(String, String, String)
      */
     public static String replace(final String content, final String target, final String replacement) {
         CharSequence a	= target.subSequence(0, target.length());
@@ -303,16 +304,47 @@ public class Strings {
 
     /**
      * Replace parts of a String by other Strings.
-     * @param content the String to altered.
+     * @param content the String to be altered.
      * @param replacements a Map of parts to be replaced with their replacement.
      * @return a new String identical to <code>content</code> except where parts of it have been replaced according
      * to the <code>replacements</code> Map.
      * @see Strings#replace(String, String, String)
+     * @see Strings#regexReplaceMany(String, Map)
      */
     public static String replaceMany(final String content, Map<String, String> replacements) {
         String result = content;
         for (String target: replacements.keySet())
             result = replace(result, target, replacements.get(target));
+        return result;
+    }
+
+    /**
+     * Replace part of a String by another String.
+     * @param content the String to be altered.
+     * @param regex a regular expression representing the part of the String to be replaced.
+     * @param replacement the String to use as a replacement.
+     * @return a new String identical to <code>content</code> except where <code>target</code> is replaced by
+     * <code>replacement</code>.
+     * @see Strings#replace(String, String, String)
+     * @see Strings#regexReplaceMany(String, java.util.Map)
+     */
+    public static String regexReplace(final String content, final String regex, final String replacement) {
+        return content.replaceAll(regex, replacement);
+    }
+
+    /**
+     * Replace parts of a String by other Strings.
+     * @param content the String to be altered.
+     * @param replacements a Map of regular expressions to their replacements.
+     * @return a new String identical to <code>content</code> except where parts of it have been replaced according
+     * to the <code>replacements</code> Map.
+     * @see Strings#regexReplace(String, String, String)
+     * @see Strings#replaceMany(String, Map)
+     */
+    public static String regexReplaceMany(final String content, Map<String, String> replacements) {
+        String result = content;
+        for (String target: replacements.keySet())
+            result = regexReplace(result, target, replacements.get(target));
         return result;
     }
 
