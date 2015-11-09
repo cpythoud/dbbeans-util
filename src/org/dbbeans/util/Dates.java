@@ -60,6 +60,14 @@ public class Dates {
     }
 
     /**
+     * Returns the current year on the computer clock
+     * @return the current year
+     */
+    public static int getCurrentYear() {
+        return getYear(getCurrentDate());
+    }
+
+    /**
      * Returns a java.sql.Timestamp initialized with the current date and time.
      * @return a java.sql.Timestamp initialized with the current date and time.
      */
