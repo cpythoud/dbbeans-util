@@ -14,7 +14,7 @@ web application development. They will probably be most useful to you
 in a similar context.
 
 Java 6 or higher is required. (Java 5 might work if you recompile the
-source. I haven't tried it recently.)
+sources. I haven't tried it recently.)
 
 ## What's included
 
@@ -25,7 +25,7 @@ for detailed information.
 You might find that some functions duplicate facilities that now exist
 as part of the standard library or Apache Common libraries. Please
 remember that I started collecting these functions in the days of
-Java 1.3 and that I've to keep them in the library for backward
+Java 1.3 and that I had to keep most of them in the library for backward
 compatibility.
 
 ### String tools
@@ -37,7 +37,7 @@ replace parts of strings.
 
 ### Dates
 
-The other functions I rely the most on are the ones in the _Dates_
+I also use a lot the functions in the _Dates_
 class, with their companion classes _SimpleInputDateFormat_,
 _SimpleInputTimeFormat_ and _SimpleInputTimestampFormat_.
 
@@ -90,7 +90,7 @@ The _json_ subpackage contains classes that can be used to represent
 a JSON document.
 
 The base class is _JsonObject_. Once you have created a JsonObject, you
-can add subojects of the different types to it to compose your document.
+can add subobjects of the different types to it to compose your document.
 Once this is done, you can call the _print()_ function on the JsonObject
 to create the JSON string representation.
 
@@ -114,9 +114,9 @@ This library is used in the following projects:
   a Java library to generate Java code;
 - [Beanmaker](https://github.com/cpythoud/beanmaker):
   a Java library and framework to generate Java code in relation
-  with a relational database; this project is based on all the above
+  with a relational database; this project uses all the above
   libraries;
 - CMSAlpha: CMS (Content Management System), for use by
-  professional wed designer and web application developers,
+  professional wed designers and web application developers,
   based on Servlets, JSP and the above libraries;
   GitHub repository coming soon.
