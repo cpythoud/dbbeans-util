@@ -35,7 +35,7 @@ public class JsonArrayOfStringsElement extends JsonElement {
 		buf.append(tabs);
 		buf.append("\"");
 		buf.append(getName());
-		buf.append("\" = { ");
+		buf.append("\" = [ ");
 		int index = 0;
 		final int max = values.size();
 		for (String val: values) {
@@ -46,7 +46,7 @@ public class JsonArrayOfStringsElement extends JsonElement {
 			if (index != max)
 				buf.append(", ");
 		}
-		buf.append(" }");
+		buf.append(" ]");
 		if (!isLast)
 			buf.append(",");
 		buf.append("\n");
