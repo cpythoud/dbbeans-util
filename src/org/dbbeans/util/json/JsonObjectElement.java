@@ -32,7 +32,7 @@ public class JsonObjectElement extends JsonElement {
 		buf.append(tabs);
 		buf.append("\"");
 		buf.append(getName());
-		buf.append("\" = ");
+		buf.append("\" : ");
 		buf.append(value.print(indentLevel, false));
 		if (!isLast)
 			buf.append(",");

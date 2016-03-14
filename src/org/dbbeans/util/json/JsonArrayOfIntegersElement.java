@@ -35,7 +35,7 @@ public class JsonArrayOfIntegersElement extends JsonElement {
 		buf.append(tabs);
 		buf.append("\"");
 		buf.append(getName());
-		buf.append("\" = { ");
+		buf.append("\" : { ");
 		int index = 0;
 		final int max = values.size();
 		for (long val: values) {

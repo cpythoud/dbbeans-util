@@ -37,7 +37,7 @@ public class JsonArrayOfObjectsElement extends JsonElement {
 		buf.append(tabs);
 		buf.append("\"");
 		buf.append(getName());
-		buf.append("\" = [\n");
+		buf.append("\" : [\n");
 		int index = 0;
 		final int max = values.size();
 		for (JsonObject jo: values) {
