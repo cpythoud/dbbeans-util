@@ -3,7 +3,9 @@ package org.dbbeans.util.json;
 /**
  * This class represents a json element with a boolean value.
  */
-public class JsonBooleanElement extends JsonStringElement {
+public class JsonBooleanElement extends JsonElement {
+
+    private final boolean value;
 
     /**
      * Creates the json element and gives it a name and value.
@@ -11,19 +13,33 @@ public class JsonBooleanElement extends JsonStringElement {
      * @param value of the element.
      */
 	public JsonBooleanElement(final String name, final boolean value) {
-		super(name, calcVal(value));
+		super(name);
+        this.value = value;
 	}
 
     /**
-     * Returns a string representation (either "true" or "false") of a boolean value.
-     * @param value to be converted to a String.
-     * @return string representation of the boolean value.
+     * Prints this JsonElement. This function is usually called from the {@link JsonObject#print(int, boolean)}
+     * function of the enclosing JsonObject.
+     * @param indentLevel the indentation level (how many tabs).
+     * @param isLast must be true if this element is the last one in the json object, to prevent this function
+     *               to print an extra comma.
+     * @return a representation of this JsonElement.
      */
-    protected static String calcVal(final boolean value) {
-        if (value)
-            return "true";
+    @Override
+    public String print(final int indentLevel, final boolean isLast) {
+        final String tabs = getTabs(indentLevel);
 
-        return "false";
+        final StringBuilder buf = new StringBuilder();
+
+        buf.append(tabs);
+        buf.append("\"");
+        buf.append(getName());
+        buf.append("\" : ");
+        buf.append(value);
+        if (!isLast)
+            buf.append(",");
+        buf.append("\n");
+
+        return buf.toString();
     }
 }
-
