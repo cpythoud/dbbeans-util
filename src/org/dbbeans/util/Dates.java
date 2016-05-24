@@ -427,4 +427,19 @@ public class Dates {
 
         return new Timestamp(cal.getTimeInMillis());
     }
+
+    /**
+     * Compare two dates (java.sql.Date). If the first date is the same as the second date, returns 0.
+     * If the first date is before the second date, returns -1.
+     * If the first date is after the second date, returns 1.
+     * This method should be used instead of the compareTo() method inherited from java.util.Date which does not
+     * work as expected when the dates are the same (problem with the normalization of the time parts in
+     * java.util.Date).
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static int compare(final Date date1, final Date date2) {
+        return date1.toString().compareTo(date2.toString());
+    }
 }
