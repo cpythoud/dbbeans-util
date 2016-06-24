@@ -430,8 +430,8 @@ public class Dates {
 
     /**
      * Compare two dates (java.sql.Date). If the first date is the same as the second date, returns 0.
-     * If the first date is before the second date, returns -1.
-     * If the first date is after the second date, returns 1.
+     * If the first date is before the second date, returns a negative number (i.e., -1).
+     * If the first date is after the second date, returns a positive number (i.e., 1).
      * This method should be used instead of the compareTo() method inherited from java.util.Date which does not
      * work as expected when the dates are the same (problem with the normalization of the time parts in
      * java.util.Date).
