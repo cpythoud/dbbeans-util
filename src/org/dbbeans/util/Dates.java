@@ -442,4 +442,18 @@ public class Dates {
     public static int compare(final Date date1, final Date date2) {
         return date1.toString().compareTo(date2.toString());
     }
+
+    /**
+     * Checks if a date is between two other dates.
+     * @param date to check
+     * @param start of period
+     * @param end of period
+     * @return true if date is between start and end or if date == start or date == end, false otherwise
+     */
+    public static boolean isBetween(final Date date, final Date start, final Date end) {
+        if (compare(start, end) > 0)  // end before start
+            return compare(date, end) >= 0 && compare(date, start) <= 0;
+
+        return compare(date, start) >= 0 && compare(date, end) <= 0;
+    }
 }
