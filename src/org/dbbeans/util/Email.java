@@ -185,4 +185,25 @@ public class Email {
             throw new RuntimeException(eex.getMessage());
         }
     }
+
+    /**
+     * Removes all email recipients added via the constuctor or the addTo() function.
+     */
+    public void clearRecipients() {
+        to.clear();
+    }
+
+    /**
+     * Removes all email recipients added via the addCc() function.
+     */
+    public void clearCCs() {
+        cc.clear();
+    }
+
+    /**
+     * Removes all email recipients added via the addBcc() function.
+     */
+    public void clearBCCs() {
+        bcc.clear();
+    }
 }
