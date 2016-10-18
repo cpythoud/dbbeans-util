@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ...
+ * This class is a simple wrapper around functionality provided by the Apache Freemarker templating system.
  */
 public class SimpleTemplateProcessor {
 
@@ -22,6 +22,15 @@ public class SimpleTemplateProcessor {
         return createConfiguration(templatePath, false);
     }
 
+    /**
+     * This class create a freemarker.template.Configuration with sensible default values for production or
+     * debugging.
+     * @param templatePath indicates where is the directory containing the template files.
+     * @param debug, if true sets some option appropriate for development in the Configuration object,
+     *               if false sets some option appropriate for production in the Configuration object.
+     * @return a freemarker.template.Configuration object. You should use the same Configuration for
+     * all the SimpleTemplateProcessor you create.
+     */
     public static Configuration createConfiguration(final String templatePath, final boolean debug) {
         final Configuration configuration = new Configuration(Configuration.VERSION_2_3_25);
 
