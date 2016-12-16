@@ -57,5 +57,19 @@ public class SimpleInputTimeFormat {
         return false;
     }
 
+    /**
+     * Validate a time in short form (without indication of seconds) according to this SimpleTimeFormat.
+     * @param time to be validated.
+     * @return true if the time is correct according to the format, false otherwise.
+     */
+    public boolean validateShort(final String time) {
+        for (String separator: separators) {
+            if (Dates.isShortTimeOK(time, separator))
+                return true;
+        }
+
+        return false;
+    }
+
     private final List<String> separators;
 }

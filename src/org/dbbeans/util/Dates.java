@@ -166,10 +166,25 @@ public class Dates {
      * @param time string to be checked.
      * @param separator between the time string parts.
      * @return true if time string can be validated, false otherwise.
+     * @see Dates#isShortTimeOK(String, String)
      */
     public static boolean isTimeOK(final String time, final String separator) {
         final String[] parts = time.split(separator);
         return parts.length == 3 && isTimeOK(parts[0], parts[1], parts[2]);
+    }
+
+    /**
+     * Check if a time String, without seconds, is correctly formatted.
+     * The time string must be comprised of hours and minutes only.
+     * The two parts of the time string must be between acceptable range for hours and minutes,
+     * respectively 0-23 and 0-59.
+     * @param time string to be checked.
+     * @param separator between the hours and minutes.
+     * @return true if time string can be validated, false otherwise.
+     * @see Dates#isTimeOK(String, String, String)
+     */
+    public static boolean isShortTimeOK(final String time, final String separator) {
+        return isTimeOK(time + separator + "00", separator);
     }
 
     /**
@@ -367,6 +382,28 @@ public class Dates {
         cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(parts[0]));
         cal.set(Calendar.MINUTE, Integer.valueOf(parts[1]));
         cal.set(Calendar.SECOND, Integer.valueOf(parts[2]));
+
+        return new Time(cal.getTimeInMillis());
+    }
+
+    /**
+     * Transform a 'short' String, including only hours and minutes,
+     * in a {@link java.sql.Time} object. The separator between hours and minutes must be specified.
+     * @param string to be converted.
+     * @param separator used to separate hours and minutes.
+     * @return a Time object.
+     */
+    public static Time getTimeFromShortString(final String string, final String separator) {
+        final String[] parts = string.split(separator);
+        if (parts.length != 2)
+            throw new IllegalArgumentException("Invalid format: must be   [h]h" + separator + "[m]m, received " + string);
+        if (!isTimeOK(parts[0], parts[1], "00"))
+            throw new IllegalArgumentException("Submitted time (" + string + ") is invalid.");
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(parts[0]));
+        cal.set(Calendar.MINUTE, Integer.valueOf(parts[1]));
+        //cal.set(Calendar.SECOND, Integer.valueOf(parts[2]));
 
         return new Time(cal.getTimeInMillis());
     }
