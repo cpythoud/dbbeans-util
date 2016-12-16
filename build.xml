@@ -37,6 +37,14 @@
         <jar destfile="${build.dir}/dbbeans-util-${jar.version}.jar" basedir="${build.classes}" includes="org/dbbeans/util/**/*" />
     </target>
 
+    <target name="jar-src" description="Create file dbbeans-util-(version).jar" depends="cleanup,compile">
+        <java classname="org.dbbeans.util.Version" classpath="${build.classes}" outputproperty="jar.version" />
+        <jar destfile="${build.dir}/dbbeans-util-${jar.version}.jar">
+            <fileset dir="${build.classes}" includes="org/dbbeans/util/**/*"/>
+            <fileset dir="${src-ascii.dir}" includes="org/dbbeans/util/**/*"/>
+        </jar>
+    </target>
+
     <target name="doc" description="Create javadoc for this project" depends="native2ascii">
         <mkdir dir="${javadoc.dir}" />
         <javadoc sourcepath="${src-ascii.dir}" destdir="${javadoc.dir}" />
