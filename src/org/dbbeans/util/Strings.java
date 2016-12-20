@@ -571,4 +571,23 @@ public class Strings {
         return recursivePow10(base * 10, power - 1);
     }
 
+    /**
+     * Takes one String and normalizes white space. Removes white space at beginning and end of string and transforms
+     * any multiple spaces, tabs or line feeds inside the string into a single white space.
+     * @param string to normalize
+     * @return normalized string
+     */
+    public static String normalize(final String string) {
+        return string.replaceAll("\\s+", " ").trim();
+    }
+
+    /**
+     * Takes one string and removes all white space from it.
+     * @param string
+     * @return string without any whitespace
+     */
+    public static String removeWhiteSpace(final String string) {
+        return string.replaceAll("\\s+", "").trim();
+    }
+
 }
