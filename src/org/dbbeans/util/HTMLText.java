@@ -7,6 +7,7 @@ import org.apache.commons.lang3.text.translate.LookupTranslator;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import java.util.List;
 
 /**
  * This class contains static function to help with manipulating text in an HTML/web application context.
@@ -133,6 +134,26 @@ public class HTMLText {
             character = iterator.next();
         }
         return result.toString();
+    }
+
+    /**
+     * Transforms a List of Strings in a String where every item in the list is concatenated to the previous
+     * one with a &lt;br&gt; tag.
+     * @param items
+     * @return items concatenated, separated by BRs.
+     */
+    public static String brList(final List<String> items) {
+        if (items.isEmpty())
+            return "";
+
+        final StringBuilder buf = new StringBuilder();
+
+        for (String item: items)
+            buf.append(item).append("<br>");
+
+        buf.delete(buf.length() - 4, buf.length());
+
+        return buf.toString();
     }
 
     private final static String[] NUMBER_PATTERN = {
