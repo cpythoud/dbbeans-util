@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.apache.commons.mail.SimpleEmail;
 
 /**
  * This class is a basic wrapper around org.apache.commons.mail.HtmlEmail.
@@ -36,8 +37,7 @@ public class Email {
 
     private boolean escapeNonAsciiCharacters = false;
 
-    private HtmlEmail apacheEmail = new HtmlEmail();
-
+    private boolean textOnly = false;
 
     /**
      * Set the SMTP server to be used for sending e-mail. SMTP authentication is not supported yet.
@@ -143,6 +143,14 @@ public class Email {
         this.escapeNonAsciiCharacters = escapeNonAsciiCharacters;
     }
 
+    /**
+     * Set this to true if you want to send a text only message (no HTML). Useful for SMS gateway and other
+     * administrative uses.
+     * @param textOnly flag that indicates if the HTML part of the message should be ignored.
+     */
+    public void setTextOnly(final boolean textOnly) {
+        this.textOnly = textOnly;
+    }
 
     /**
      * Sends the message.<br/>
@@ -152,15 +160,17 @@ public class Email {
      * details of the originally thrown exception will be available in the RuntimeException.
      */
     public void send() {
+        final org.apache.commons.mail.Email apacheEmail = createEmail();
+
         if (Strings.isEmpty(smtpServer))
             throw new IllegalArgumentException("No SMTP server specified.");
         if (Strings.isEmpty(from))
             throw new IllegalArgumentException("No sender (from address) specified.");
         if (to.size() == 0)
             throw new IllegalArgumentException("No recipient (to address) specified.");
-        if (Strings.isEmpty(subject))
-            throw new IllegalArgumentException("Subject is missing.");
-        if (Strings.isEmpty(htmlMainText))
+        if (!textOnly && Strings.isEmpty(subject))
+            throw new IllegalArgumentException("Subject is missing. Empty subject not allowed for HTML messages.");
+        if (!textOnly && Strings.isEmpty(htmlMainText))
             throw new IllegalArgumentException("Main message text is missing.");
 
         try {
@@ -173,17 +183,40 @@ public class Email {
             for (String address: bcc)
                 apacheEmail.addBcc(address);
             apacheEmail.setSubject(subject);
-            if (escapeNonAsciiCharacters)
-                apacheEmail.setHtmlMsg(HTMLText.accentsToEscape(htmlPrologue + htmlMainText + htmlEpilogue));
-            else
-                apacheEmail.setHtmlMsg(htmlPrologue + htmlMainText + htmlEpilogue);
-            if (!Strings.isEmpty(textMessage))
-                apacheEmail.setTextMsg(textMessage);
 
             apacheEmail.send();
         } catch (final EmailException eex) {
             throw new RuntimeException(eex.getMessage());
         }
+    }
+
+    private org.apache.commons.mail.Email createEmail() {
+        if (textOnly) {
+            final SimpleEmail simpleEmail = new SimpleEmail();
+
+            try {
+                simpleEmail.setMsg(textMessage);
+            } catch (final EmailException eex) {
+                throw new RuntimeException(eex.getMessage());
+            }
+
+            return simpleEmail;
+        }
+
+        final HtmlEmail htmlEmail = new HtmlEmail();
+
+        try {
+            if (escapeNonAsciiCharacters)
+                htmlEmail.setHtmlMsg(HTMLText.accentsToEscape(htmlPrologue + htmlMainText + htmlEpilogue));
+            else
+                htmlEmail.setHtmlMsg(htmlPrologue + htmlMainText + htmlEpilogue);
+            if (!Strings.isEmpty(textMessage))
+                htmlEmail.setTextMsg(textMessage);
+        } catch (final EmailException eex) {
+            throw new RuntimeException(eex.getMessage());
+        }
+
+        return htmlEmail;
     }
 
     /**
