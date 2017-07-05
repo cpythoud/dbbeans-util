@@ -590,4 +590,43 @@ public class Strings {
         return string.replaceAll("\\s+", "").trim();
     }
 
+    /**
+     * Add characters to a String to bring it to a certain length.
+     *
+     * Characters can be added at the end or at the beginning of the String.
+     * @param complemented String to be lengthened
+     * @param complement characters to use to lengthen the String
+     * @param minCharCount minimum length required
+     * @param before true if the complement characters are to be inserted at the beginning of the String,
+     *               otherwise they will be inserted at the end of it.
+     * @return the complemented String.
+     */
+    public static String complementString(
+            final String complemented,
+            final String complement,
+            final int minCharCount,
+            final boolean before)
+    {
+        if (isEmpty(complemented))
+            throw new IllegalArgumentException("Complement character is empty or null");
+
+        final int complementedLength = complemented.length();
+        if (complementedLength >= minCharCount)
+               return complemented;
+
+        final int complementLength = complement.length();
+        int iterations = (complementedLength - minCharCount) / complementLength;
+        if (complementedLength + iterations * complementedLength < minCharCount)
+            ++iterations;
+
+        final StringBuilder buf = new StringBuilder();
+        if (!before)
+            buf.append(complemented);
+        for (int i = 0; i < iterations; ++i)
+            buf.append(complement);
+        if (before)
+            buf.append(complemented);
+
+        return buf.toString();
+    }
 }
