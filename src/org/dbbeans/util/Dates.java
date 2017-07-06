@@ -68,6 +68,22 @@ public class Dates {
     }
 
     /**
+     * Returns the current month (1-12) on the computer clock
+     * @return the current month
+     */
+    public static int getCurrentMonth() {
+        return getMonth(getCurrentDate());
+    }
+
+    /**
+     * Returns the current day of the month (1-31) on the computer clock
+     * @return the current day of the month
+     */
+    public static int getCurrentDayOfMonth() {
+        return getDay(getCurrentDate());
+    }
+
+    /**
      * Returns a java.sql.Timestamp initialized with the current date and time.
      * @return a java.sql.Timestamp initialized with the current date and time.
      */
