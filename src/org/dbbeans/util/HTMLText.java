@@ -156,7 +156,13 @@ public class HTMLText {
         return buf.toString();
     }
 
-    private final static String[] NUMBER_PATTERN = {
+    private final static String[] NUMBER_PATTERN = CharacterLists.getNumberPatternArray();
+
+    private final static String[] ESCAPE_PATTERN = CharacterLists.getEscapePatternArray();
+
+    private final static String[] ACCENTED_CHARACTERS = CharacterLists.getAccentedCharacterArray();
+
+    /*private final static String[] NUMBER_PATTERN = {
             "&#225;", "&#224;", "&#226;", "&#228;",
             "&#233;", "&#232;", "&#234;", "&#235;",
             "&#237;", "&#236;", "&#238;", "&#239;",
@@ -199,5 +205,5 @@ public class HTMLText {
             "Ú", "Ù", "Û", "Ü",
             "ç", "Ç", "ý", "Ý",
             "ã", "ñ", "õ",
-            "Ã", "Ñ", "Õ" };
+            "Ã", "Ñ", "Õ" };*/
 }
