@@ -1,6 +1,11 @@
 package org.dbbeans.util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -111,5 +116,46 @@ public class Files {
             throw new IllegalArgumentException("Filename is a directory name");
 
         return filename.substring(index + 1, length);
+    }
+
+    /**
+     * Read the content of a text file into a String
+     * @param file to be read
+     * @return text content of the file in a String
+     */
+    public static String read(File file) {
+        final StringBuffer buffer = new StringBuffer();
+        char[] buf = new char[1024];
+        int numRead=0;
+
+        try {
+            final BufferedReader reader = new BufferedReader(new FileReader(file));
+
+            while((numRead = reader.read(buf)) != -1){
+                final String readData = String.valueOf(buf, 0, numRead);
+                buffer.append(readData);
+            }
+
+            reader.close();
+        } catch (final IOException ioex) {
+            throw new RuntimeException(ioex);
+        }
+
+        return buffer.toString();
+    }
+
+    /**
+     * Use a String to create a text file
+     * @param s text to be written to file.
+     * @param file into which the text is to be written
+     */
+    public static void write(final String s, final File file) {
+        try {
+            final PrintWriter out = new PrintWriter(file);
+            out.println(s);
+            out.close();
+        } catch (final FileNotFoundException fnfex) {
+            throw new RuntimeException(fnfex);
+        }
     }
 }
