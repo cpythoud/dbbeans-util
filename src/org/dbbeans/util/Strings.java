@@ -629,4 +629,21 @@ public class Strings {
 
         return buf.toString();
     }
+
+    /**
+     * Given a String returns the same String repeated n times
+     * @param s the String to repeat
+     * @param times how many times to repeat the String
+     * @return s repeated times times
+     */
+    public static String repeatString(final String s, final int times) {
+        if (times < 0)
+            throw new IllegalArgumentException("Multiplier must be >= 0");
+
+        final StringBuilder repeated = new StringBuilder();
+        for (int i = 0; i < times; ++i)
+            repeated.append(s);
+
+        return repeated.toString();
+    }
 }
