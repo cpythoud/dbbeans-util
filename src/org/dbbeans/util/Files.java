@@ -1,11 +1,14 @@
 package org.dbbeans.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+
 import java.util.List;
 
 /**
@@ -128,34 +131,58 @@ public class Files {
         char[] buf = new char[1024];
         int numRead=0;
 
+        BufferedReader reader = null;
         try {
-            final BufferedReader reader = new BufferedReader(new FileReader(file));
+            reader = new BufferedReader(new FileReader(file));
 
             while((numRead = reader.read(buf)) != -1){
                 final String readData = String.valueOf(buf, 0, numRead);
                 buffer.append(readData);
             }
-
-            reader.close();
         } catch (final IOException ioex) {
             throw new RuntimeException(ioex);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (final IOException ignored) { }
+            }
         }
 
         return buffer.toString();
     }
 
     /**
-     * Use a String to create a text file
+     * Use a String to create an UTF-8 text file
      * @param s text to be written to file.
      * @param file into which the text is to be written
+     * @see Files#write(String, File, String)
      */
     public static void write(final String s, final File file) {
+        write(s, file, "UTF-8");
+    }
+
+    /**
+     * Use a String to create an text file
+     * @param s text to be written to file.
+     * @param file into which the text is to be written
+     * @param encoding of the resulting file
+     * @see Files#write(String, File)
+     */
+    public static void write(final String s, final File file, final String encoding) {
+        Writer out = null;
         try {
-            final PrintWriter out = new PrintWriter(file);
-            out.println(s);
-            out.close();
-        } catch (final FileNotFoundException fnfex) {
-            throw new RuntimeException(fnfex);
+            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), encoding));
+            out.write(s);
+        } catch (final IOException ioex) {
+            throw new RuntimeException(ioex);
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (final IOException ignored) { }
+            }
+
         }
     }
 }
