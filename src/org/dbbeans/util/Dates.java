@@ -419,7 +419,7 @@ public class Dates {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(parts[0]));
         cal.set(Calendar.MINUTE, Integer.valueOf(parts[1]));
-        //cal.set(Calendar.SECOND, Integer.valueOf(parts[2]));
+        cal.set(Calendar.SECOND, 0);
 
         return new Time(cal.getTimeInMillis());
     }
