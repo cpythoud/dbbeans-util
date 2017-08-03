@@ -530,6 +530,9 @@ public class Strings {
         if (digits < 2 || digits > 18)
             throw new IllegalArgumentException("Illegal digits number: " + digits + ", must be between 2 and 19.");
 
+        if (value == 0)
+            return repeatString("0", digits);
+
         final long maxVal = pow10(digits);
 
         if (value > maxVal)
