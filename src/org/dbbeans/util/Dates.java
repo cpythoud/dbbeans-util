@@ -44,6 +44,42 @@ public class Dates {
     }
 
     /**
+     * Given a java.sql.Time, returns the hours.
+     * @param time, a java.sql.Time.
+     * @return hours.
+     */
+    public static int getHours(final Time time) {
+        return Integer.valueOf(time.toString().substring(0, 2));
+    }
+
+    /**
+     * Given a java.sql.Time, returns the minutes.
+     * @param time, a java.sql.Time.
+     * @return minutes.
+     */
+    public static int getMinutes(final Time time) {
+        return Integer.valueOf(time.toString().substring(3, 5));
+    }
+
+    /**
+     * Given a java.sql.Time, returns the seconds.
+     * @param time, a java.sql.Time.
+     * @return seconds.
+     */
+    public static int getSeconds(final Time time) {
+        return Integer.valueOf(time.toString().substring(6, 8));
+    }
+
+    /**
+     * Given a java.sql.Time, returns how many seconds have elapsed in the day since midnight.
+     * @param time, a java.sql.Time.
+     * @return seconds since midnight.
+     */
+    public static int getTimeInSeconds(final Time time) {
+        return getSeconds(time) + getMinutes(time) * 60 + getHours(time) * 3600;
+    }
+
+    /**
      * Returns a java.sql.Date initialized with the current date.
      * @return a java.sql.Date initialized with the current date.
      */
@@ -494,6 +530,19 @@ public class Dates {
      */
     public static int compare(final Date date1, final Date date2) {
         return date1.toString().compareTo(date2.toString());
+    }
+
+    /**
+     * Compare two times (java.sql.Time). Only the hours, minutes and seconds are compared. Milliseconds are ignored.
+     * If the first time is the same as the second time, returns 0.
+     * If the first time is before the second time, returns a negative number (i.e., -1).
+     * If the first time is after the second time, returns a positive number (i.e., 1).
+     * @param time1
+     * @param time2
+     * @return
+     */
+    public static int compare(final Time time1, final Time time2) {
+        return getTimeInSeconds(time1) - getTimeInSeconds(time2);
     }
 
     /**
