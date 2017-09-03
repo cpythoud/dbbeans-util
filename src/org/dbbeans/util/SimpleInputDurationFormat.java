@@ -40,19 +40,22 @@ public class SimpleInputDurationFormat {
 
         int offset = 0;
 
-        final Pair<String, Integer> dayDigitsAndOffset = getDigitsAndOffset(duration, offset, daySymbol, false);
+        final Pair<String, Integer> dayDigitsAndOffset =
+                getDigitsAndOffset(duration, offset, daySymbol, false);
         if (dayDigitsAndOffset.e2 == null)
             return returnFalse();
         results.add(dayDigitsAndOffset.e1);
         offset = dayDigitsAndOffset.e2;
 
-        final Pair<String, Integer> hourDigitsAndOffset = getDigitsAndOffset(duration, offset, hourSymbol, false);
+        final Pair<String, Integer> hourDigitsAndOffset =
+                getDigitsAndOffset(duration, offset, hourSymbol, false);
         if (hourDigitsAndOffset.e2 == null)
             return returnFalse();
         results.add(hourDigitsAndOffset.e1);
         offset = hourDigitsAndOffset.e2;
 
-        final Pair<String, Integer> minuteDigitsAndOffset = getDigitsAndOffset(duration, offset, minuteSymbol, true);
+        final Pair<String, Integer> minuteDigitsAndOffset =
+                getDigitsAndOffset(duration, offset, minuteSymbol, true);
         if (minuteDigitsAndOffset.e2 == null)
             return returnFalse();
         results.add(minuteDigitsAndOffset.e1);
@@ -66,7 +69,7 @@ public class SimpleInputDurationFormat {
         System.out.println(minuteDigitsAndOffset.e2);*/
 
         if (offset != duration.length())
-            throw new AssertionError();//return returnFalse();
+            return returnFalse();
 
         for (String result: results)
             if (!Strings.isEmpty(result))
@@ -75,7 +78,12 @@ public class SimpleInputDurationFormat {
         return returnFalse();
     }
 
-    private Pair<String, Integer> getDigitsAndOffset(final String duration, final int offset, final String symbol, final boolean symbolOptional) {
+    private Pair<String, Integer> getDigitsAndOffset(
+            final String duration,
+            final int offset,
+            final String symbol,
+            final boolean symbolOptional)
+    {
         final int pos = duration.indexOf(symbol);
         if (pos != -1) {
             if (pos == offset)
