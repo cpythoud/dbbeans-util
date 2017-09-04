@@ -81,18 +81,36 @@ public class Dates {
 
     /**
      * Returns a java.sql.Date initialized with the current date.
+     * The time part of any java.sql.Date returned by getCurrentDate()
+     * is 00:00:00.000.
      * @return a java.sql.Date initialized with the current date.
      */
     public static Date getCurrentDate() {
-        return new Date((new java.util.Date()).getTime());
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new java.util.Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return new Date(calendar.getTime().getTime());
     }
 
     /**
      * Returns a java.sql.Time initialized with the current time.
+     * The date part of any java.sql.Time returned by getCurrentTime()
+     * is January 1, 1970 and the microseconds are set to 0.
      * @return a java.sql.Time initialized with the current time.
      */
     public static Time getCurrentTime() {
-        return new Time((new java.util.Date()).getTime());
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new java.util.Date());
+        calendar.set(Calendar.YEAR, 1970);
+        calendar.set(Calendar.MONTH, Calendar.JANUARY);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return new Time(calendar.getTime().getTime());
     }
 
     /**
