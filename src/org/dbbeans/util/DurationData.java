@@ -40,6 +40,16 @@ public class DurationData {
             final String minuteSymbol,
             final boolean skipMinuteSymbol)
     {
+        return format(daySymbol, hourSymbol, minuteSymbol, skipMinuteSymbol, false);
+    }
+
+    public String format(
+            final String daySymbol,
+            final String hourSymbol,
+            final String minuteSymbol,
+            final boolean skipMinuteSymbol,
+            final boolean showZero)
+    {
         final StringBuilder buf = new StringBuilder();
 
         if (days > 0)
@@ -61,14 +71,26 @@ public class DurationData {
                 buf.append(minutes).append(minuteSymbol);
         }
 
+        if (showZero && buf.length() == 0)
+            return "0" + minuteSymbol;
+
         return buf.toString();
     }
 
     public String format(final SimpleInputDurationFormat simpleInputDurationFormat, final boolean skipMinuteSymbol) {
+        return format(simpleInputDurationFormat, skipMinuteSymbol, false);
+    }
+
+    public String format(
+            final SimpleInputDurationFormat simpleInputDurationFormat,
+            final boolean skipMinuteSymbol,
+            final boolean showZero)
+    {
         return format(
                 simpleInputDurationFormat.getDaySymbol(),
                 simpleInputDurationFormat.getHourSymbol(),
                 simpleInputDurationFormat.getMinuteSymbol(),
-                skipMinuteSymbol);
+                skipMinuteSymbol,
+                showZero);
     }
 }
