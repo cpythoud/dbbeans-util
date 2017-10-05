@@ -649,4 +649,21 @@ public class Strings {
 
         return repeated.toString();
     }
+
+    /**
+     * Return a List of Strings from a List of any type by calling toString().
+     * On each element in the parameter List, toString() is called to create the corresponding element in the
+     * returned List.
+     * @param objects list of objects from which the List of Strings will be produced
+     * @param <T> any java Object
+     * @return a List of Strings
+     */
+    public static <T> List<String> asListOfStrings(final List<T> objects) {
+        final List<String> strings = new ArrayList<String>();
+
+        for (T object: objects)
+            strings.add(object.toString());
+
+        return strings;
+    }
 }
