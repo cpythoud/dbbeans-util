@@ -70,6 +70,10 @@ public class SimpleTemplateProcessor {
         dataModel.put(key, value);
     }
 
+    public void set(final Map<String, Object> keyValuePairs) {
+        dataModel.putAll(keyValuePairs);
+    }
+
     public void remove(final String key) {
         dataModel.remove(key);
     }
