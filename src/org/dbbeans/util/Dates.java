@@ -576,4 +576,44 @@ public class Dates {
 
         return compare(date, start) >= 0 && compare(date, end) <= 0;
     }
+
+    /**
+     * Subtract days from a date.
+     * @param date the date from which days are to be subtracted
+     * @param days the number of days to subtract
+     * @return the new date with subtracted days
+     */
+    public static Date minusDays(final Date date, final int days) {
+        return MilliSeconds.minus(date, days * MilliSeconds.ONE_DAY);
+    }
+
+    /**
+     * Add days to a date.
+     * @param date the date to which days are to be added
+     * @param days the number of days to add
+     * @return the new date with added days
+     */
+    public static Date plusDays(final Date date, final int days) {
+        return MilliSeconds.plus(date, days * MilliSeconds.ONE_DAY);
+    }
+
+    /**
+     * Subtract weeks from a date.
+     * @param date the date from which weeks are to be subtracted
+     * @param weeks the number of weeks to subtract
+     * @return the new date with subtracted weeks
+     */
+    public static Date minusWeeks(final Date date, final int weeks) {
+        return MilliSeconds.minus(date, weeks * MilliSeconds.ONE_WEEK);
+    }
+
+    /**
+     * Add weeks to a date.
+     * @param date the date to which weeks are to be added
+     * @param weeks the number of weeks to add
+     * @return the new date with added weeks
+     */
+    public static Date plusWeeks(final Date date, final int weeks) {
+        return MilliSeconds.plus(date, weeks * MilliSeconds.ONE_WEEK);
+    }
 }
