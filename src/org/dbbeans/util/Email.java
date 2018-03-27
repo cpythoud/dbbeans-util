@@ -1,10 +1,16 @@
 package org.dbbeans.util;
 
+import java.io.File;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
 
 /**
@@ -18,6 +24,31 @@ import org.apache.commons.mail.SimpleEmail;
  * The prologue and epilogue can be independently modified or kept as is.
  */
 public class Email {
+
+    public static class Attachment {
+        private final String filepath;
+        private final String filename;
+
+        public Attachment(final File file) {
+            this(file, file.getName());
+        }
+
+        public Attachment(final File file, final String filename) {
+            this(file.getPath(), filename);
+        }
+
+        public Attachment(final String filepath, final String filename) {
+            this.filepath = filepath;
+            this.filename = filename;
+        }
+
+        private EmailAttachment getEmailAttachment() {
+            final EmailAttachment emailAttachment = new EmailAttachment();
+            emailAttachment.setPath(filepath);
+            emailAttachment.setName(filename);
+            return emailAttachment;
+        }
+    }
 
     private String smtpServer;
 
@@ -38,6 +69,8 @@ public class Email {
     private boolean escapeNonAsciiCharacters = false;
 
     private boolean textOnly = false;
+
+    private final List<Attachment> attachments = new ArrayList<Attachment>();
 
     /**
      * Set the SMTP server to be used for sending e-mail. SMTP authentication is not supported yet.
@@ -192,15 +225,29 @@ public class Email {
 
     private org.apache.commons.mail.Email createEmail() {
         if (textOnly) {
-            final SimpleEmail simpleEmail = new SimpleEmail();
+            if (attachments.isEmpty()) {
+                final SimpleEmail simpleEmail = new SimpleEmail();
+
+                try {
+                    simpleEmail.setMsg(textMessage);
+                } catch (final EmailException eex) {
+                    throw new RuntimeException(eex.getMessage());
+                }
+
+                return simpleEmail;
+            }
+
+            final MultiPartEmail multiPartEmail = new MultiPartEmail();
 
             try {
-                simpleEmail.setMsg(textMessage);
+                multiPartEmail.setMsg(textMessage);
+                for (Attachment attachment: attachments)
+                    multiPartEmail.attach(attachment.getEmailAttachment());
             } catch (final EmailException eex) {
                 throw new RuntimeException(eex.getMessage());
             }
 
-            return simpleEmail;
+            return multiPartEmail;
         }
 
         final HtmlEmail htmlEmail = new HtmlEmail();
@@ -212,6 +259,8 @@ public class Email {
                 htmlEmail.setHtmlMsg(htmlPrologue + htmlMainText + htmlEpilogue);
             if (!Strings.isEmpty(textMessage))
                 htmlEmail.setTextMsg(textMessage);
+            for (Attachment attachment: attachments)
+                htmlEmail.attach(attachment.getEmailAttachment());
         } catch (final EmailException eex) {
             throw new RuntimeException(eex.getMessage());
         }
@@ -238,5 +287,25 @@ public class Email {
      */
     public void clearBCCs() {
         bcc.clear();
+    }
+
+    public void addAttachment(final File file) {
+        attachments.add(new Attachment(file));
+    }
+
+    public void addAttachment(final File file, final String filename) {
+        attachments.add(new Attachment(file, filename));
+    }
+
+    public void addAttachment(final String filepath, final String filename) {
+        attachments.add(new Attachment(filepath, filename));
+    }
+
+    public void addAttachment(final Attachment attachment) {
+        attachments.add(attachment);
+    }
+
+    public void clearAttachments() {
+        attachments.clear();
     }
 }
