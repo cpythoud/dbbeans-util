@@ -616,4 +616,16 @@ public class Dates {
     public static Date plusWeeks(final Date date, final int weeks) {
         return MilliSeconds.plus(date, weeks * MilliSeconds.ONE_WEEK);
     }
+
+    public static boolean isTodayAfter(final Date date) {
+        return compare(getCurrentDate(), date) > 0;
+    }
+
+    public static boolean isToday(final Date date) {
+        return compare(getCurrentDate(), date) == 0;
+    }
+
+    public static boolean isTodayBefore(final Date date) {
+        return compare(getCurrentDate(), date) < 0;
+    }
 }
