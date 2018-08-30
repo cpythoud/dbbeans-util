@@ -628,4 +628,28 @@ public class Dates {
     public static boolean isTodayBefore(final Date date) {
         return compare(getCurrentDate(), date) < 0;
     }
+
+    public static Date getFirstDayOfMonth(final int month, final int year) {
+        if (month < 1 || month > 12)
+            throw new IllegalArgumentException("month must be between 1 & 12");
+
+        return new Date(getMonthYearCalendar(month, year).getTimeInMillis());
+    }
+
+    public static Date getLastDayOfMonth(final int month, final int year) {
+        if (month < 1 || month > 12)
+            throw new IllegalArgumentException("month must be between 1 & 12");
+
+        final Calendar cal = getMonthYearCalendar(month, year);
+        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
+        return new Date(cal.getTimeInMillis());
+    }
+
+    private static Calendar getMonthYearCalendar(final int month, final int year) {
+        final Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH, month - 1);
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        return cal;
+    }
 }
