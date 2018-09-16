@@ -308,4 +308,40 @@ public class Email {
     public void clearAttachments() {
         attachments.clear();
     }
+
+    public String getToRecipients() {
+        return flatten(to);
+    }
+
+    public String getCcRecipients() {
+        return flatten(cc);
+    }
+
+    public String getBCcRecipients() {
+        return flatten(bcc);
+    }
+
+    private String flatten(Set<String> addresses) {
+        if (addresses.isEmpty())
+            return "";
+
+        final StringBuilder buf = new StringBuilder();
+        for (String address: addresses)
+            buf.append(address).append(", ");
+        buf.delete(buf.length() - 2, buf.length());
+
+        return buf.toString();
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getHtmlText() {
+        return htmlPrologue + htmlMainText + htmlEpilogue;
+    }
+
+    public String getTextMessage() {
+        return textMessage;
+    }
 }
