@@ -652,4 +652,8 @@ public class Dates {
         cal.set(Calendar.DAY_OF_MONTH, 1);
         return cal;
     }
+
+    public static long getNumberOfDaysBetween(final Date startDate, final Date endDate) {
+        return Math.abs(Math.round((endDate.getTime() - startDate.getTime()) / (double) MilliSeconds.ONE_DAY));
+    }
 }
