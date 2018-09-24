@@ -72,6 +72,8 @@ public class Email {
 
     private final List<Attachment> attachments = new ArrayList<Attachment>();
 
+    private boolean debug = false;
+
     /**
      * Set the SMTP server to be used for sending e-mail. SMTP authentication is not supported yet.
      * @param smtpServer the SMTP server.
@@ -217,6 +219,8 @@ public class Email {
                 apacheEmail.addBcc(address);
             apacheEmail.setSubject(subject);
 
+            apacheEmail.setDebug(debug);
+
             apacheEmail.send();
         } catch (final EmailException eex) {
             throw new RuntimeException(eex.getMessage());
@@ -343,5 +347,9 @@ public class Email {
 
     public String getTextMessage() {
         return textMessage;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 }
