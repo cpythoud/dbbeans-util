@@ -104,6 +104,18 @@ public class Money {
     }
 
     /**
+     * Returns the internal representation of the value of this MoneyFormat as a double.
+     * This function should only be used to communicate the value to external classes and libraries
+     * that expect a double value. Using this value to do any sort of calculation in your code
+     * defeats the purpose of the Money class.
+     * @return he internal representation of the value of this MoneyFormat.
+     * @throws java.lang.IllegalArgumentException if the value is too big to fit in an int.
+     */
+    public double getDoubleVal() {
+        return Double.valueOf((val / 100) + "." + (val % 100));
+    }
+
+    /**
      * Returns the associated MoneyFormat.
      * @return the associated MoneyFormat.
      */
