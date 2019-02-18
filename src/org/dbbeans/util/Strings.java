@@ -2,6 +2,7 @@ package org.dbbeans.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -505,6 +506,23 @@ public class Strings {
      * @return the result of the concatenation.
      */
     public static String concatWithSeparator(final String separator, final List<String> strings) {
+        return concatStringCollectionWithSeparator(separator, strings);
+    }
+
+    /**
+     * Takes a Collection of Strings and concatenate them together, inserting a specified separator between them.
+     * @param separator to be inserted between Strings.
+     * @param strings a list of Strings to be concatenated together.
+     * @return the result of the concatenation.
+     */
+    public static String concatWithSeparator(final String separator, final Collection<String> strings) {
+        return concatStringCollectionWithSeparator(separator, strings);
+    }
+
+    private static String concatStringCollectionWithSeparator(final String separator, final Collection<String> strings) {
+        if (strings.isEmpty())
+            return "";
+
         final StringBuilder buf = new StringBuilder();
 
         for (String s: strings) {
