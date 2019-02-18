@@ -25,4 +25,34 @@ public class Pair<E1, E2> {
         this.e1 = e1;
         this.e2 = e2;
     }
+
+    /**
+     * Returns an hashcode composed with the hashcodes of the two elements of the pair.
+     * @return the hashcode
+     */
+    @Override
+    public int hashCode() {
+        int result = e1.hashCode();
+        result = 31 * result + e2.hashCode();
+        return result;
+    }
+
+    /**
+     * Using Object.equals() or an overloaded version, compares two pairs and return true
+     * if the first element of the first pair equals the first element of the second pair
+     * and the second element of the first pair equals the second element of the second pair.
+     * @param obj to be compared
+     * @return true if the pair are equals per the definition above, or else false.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+
+        if (!(obj instanceof Pair))
+            return false;
+
+        Pair pair = (Pair) obj;
+        return e1.equals(pair.e1) && e2.equals(pair.e2);
+    }
 }
