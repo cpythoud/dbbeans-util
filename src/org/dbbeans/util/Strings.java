@@ -710,4 +710,28 @@ public class Strings {
 
         return replacementMap;
     }
+
+    /**
+     * Shorten a String to a maximum length while respecting word boundaries. I.e., the String will be shortened
+     * so that word is cut in the middle.
+     * @param text, to be shortened
+     * @param maxLength, of the string to be returned
+     * @return the shortened String
+     */
+    public static String getShortenedText(final String text, final int maxLength) {
+        if (maxLength < 10)
+            throw new IllegalArgumentException("Max length must be at least 10 characters");
+
+        if (maxLength > text.length())
+            return text;
+
+        String workingString = text.substring(0, maxLength);
+        int lastSpace = workingString.lastIndexOf(" ");
+        if (lastSpace == -1)
+            workingString = workingString + " ...";
+        else
+            workingString = workingString.substring(0, lastSpace) + " ...";
+
+        return workingString;
+    }
 }
