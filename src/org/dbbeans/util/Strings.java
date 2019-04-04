@@ -637,8 +637,8 @@ public class Strings {
                return complemented;
 
         final int complementLength = complement.length();
-        int iterations = (complementedLength - minCharCount) / complementLength;
-        if (complementedLength + iterations * complementedLength < minCharCount)
+        int iterations = (minCharCount - complementedLength) / complementLength;
+        if (complementedLength + iterations * complementLength < minCharCount)
             ++iterations;
 
         final StringBuilder buf = new StringBuilder();
