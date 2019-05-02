@@ -15,4 +15,12 @@ public abstract class ListWrapper<T> {
     public List<T> getList() {
         return Collections.unmodifiableList(list);
     }
+
+    public int size() {
+        return list.size();
+    }
+
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
 }
