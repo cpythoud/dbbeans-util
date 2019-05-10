@@ -8,8 +8,14 @@ public abstract class ListWrapper<T> {
 
     private final List<T> list = new ArrayList<T>();
 
-    protected void initializeList(final List<T> list) {
+    protected ListWrapper(final List<T> list) {
         this.list.addAll(list);
+    }
+
+    protected ListWrapper(final List<T> list,  final List<T> filteringList) {
+        for (T item: list)
+            if (filteringList.contains(item))
+                this.list.add(item);
     }
 
     public List<T> getList() {
