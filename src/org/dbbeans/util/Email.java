@@ -3,6 +3,8 @@ package org.dbbeans.util;
 import java.io.File;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -97,7 +99,7 @@ public class Email {
      * Add one or more recipient for the message.
      * @param addresses one or more recipient for the message.
      */
-    public void addTo(final String... addresses) {
+    public void addTo(final Collection<String> addresses) {
         for (String address: addresses) {
             if (!EmailValidator.validate(address, true, true))
                 throw new IllegalArgumentException("Invalid e-mail address: " + address);
@@ -106,10 +108,18 @@ public class Email {
     }
 
     /**
+     * Add one or more recipient for the message.
+     * @param addresses one or more recipient for the message.
+     */
+    public void addTo(final String... addresses) {
+        addTo(Arrays.asList(addresses));
+    }
+
+    /**
      * Add one or more CC recipient for the message.
      * @param addresses one or more CC recipient for the message.
      */
-    public void addCc(final String... addresses) {
+    public void addCc(final Collection<String> addresses) {
         for (String address: addresses) {
             if (!EmailValidator.validate(address, true, true))
                 throw new IllegalArgumentException("Invalid e-mail address: " + address);
@@ -118,15 +128,31 @@ public class Email {
     }
 
     /**
+     * Add one or more CC recipient for the message.
+     * @param addresses one or more CC recipient for the message.
+     */
+    public void addCc(final String... addresses) {
+        addCc(Arrays.asList(addresses));
+    }
+
+    /**
      * Add one or more BCC recipient for the message.
      * @param addresses one or more BCC recipient for the message.
      */
-    public void addBcc(final String... addresses) {
+    public void addBcc(final Collection<String> addresses) {
         for (String address: addresses) {
             if (!EmailValidator.validate(address, true, true))
                 throw new IllegalArgumentException("Invalid e-mail address: " + address);
             bcc.add(address);
         }
+    }
+
+    /**
+     * Add one or more BCC recipient for the message.
+     * @param addresses one or more BCC recipient for the message.
+     */
+    public void addBcc(final String... addresses) {
+        addBcc(Arrays.asList(addresses));
     }
 
     /**
