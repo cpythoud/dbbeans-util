@@ -7,6 +7,7 @@ import freemarker.template.TemplateExceptionHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
@@ -86,6 +87,46 @@ public class SimpleTemplateProcessor {
         final Writer out = new StringWriter();
         try {
             template.process(dataModel, out);
+        } catch (final TemplateException tex) {
+            throw new RuntimeException(tex);
+        } catch (final IOException ioex) {
+            throw new RuntimeException(ioex);
+        }
+
+        final String result = out.toString();
+        try {
+            out.close();
+        } catch (final IOException ioex) {
+            throw new RuntimeException(ioex);
+        }
+
+        return result;
+    }
+
+    public String processWithAlternateTemplateFile(final String alternateTemplateFile) {
+        final Writer out = new StringWriter();
+        try {
+            configuration.getTemplate(alternateTemplateFile).process(dataModel, out);
+        } catch (final TemplateException tex) {
+            throw new RuntimeException(tex);
+        } catch (final IOException ioex) {
+            throw new RuntimeException(ioex);
+        }
+
+        final String result = out.toString();
+        try {
+            out.close();
+        } catch (final IOException ioex) {
+            throw new RuntimeException(ioex);
+        }
+
+        return result;
+    }
+
+    public String processWithAlternateStringTemplate(final String templateString) {
+        final Writer out = new StringWriter();
+        try {
+            new Template("alt-template", new StringReader(templateString), configuration).process(dataModel, out);
         } catch (final TemplateException tex) {
             throw new RuntimeException(tex);
         } catch (final IOException ioex) {
