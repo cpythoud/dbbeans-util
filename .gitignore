@@ -3,4 +3,5 @@
 build/
 docs/
 javadoc/
+out/
 src-ascii/
