@@ -3,7 +3,6 @@ package org.dbbeans.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -775,5 +774,26 @@ public class Strings {
         }
 
         return lines;
+    }
+
+    public static String hideZeros(int val) {
+        if (val == 0)
+            return "";
+
+        return Integer.toString(val);
+    }
+
+    public static String hideZeros(long val) {
+        if (val == 0)
+            return "";
+
+        return Long.toString(val);
+    }
+
+    public static String hideZeros(double val) {
+        if (val == 0)
+            return "";
+
+        return Double.toString(val);
     }
 }
