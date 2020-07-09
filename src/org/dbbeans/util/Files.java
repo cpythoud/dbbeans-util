@@ -185,4 +185,21 @@ public class Files {
 
         }
     }
+
+    /**
+     * Create an empty file or replace an existing file with an empty file
+     * @param file to be created or made empty.
+     */
+    public static void createEmptyFile(final File file) {
+        if (file.exists() && !file.delete())
+            throw new IllegalStateException("Could not delete preexisting file");
+
+        try {
+            if (!file.createNewFile())
+                throw new IllegalStateException("Could not create file");
+        } catch (final IOException ioex) {
+            throw new RuntimeException(ioex);
+        }
+
+    }
 }
