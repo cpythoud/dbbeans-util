@@ -656,4 +656,10 @@ public class Dates {
     public static long getNumberOfDaysBetween(final Date startDate, final Date endDate) {
         return Math.abs(Math.round((endDate.getTime() - startDate.getTime()) / (double) MilliSeconds.ONE_DAY));
     }
+
+    public static Timestamp getTimestamp(final Date date, final Time time) {
+        String timeString = getYear(date) + "-" + getMonth(date) + "-" + getDay(date)
+                + " " + getHours(time) + ":" + getMinutes(time) + ":" + getSeconds(time);
+        return getTimestampFromYYMD(timeString, "-", ":");
+    }
 }
