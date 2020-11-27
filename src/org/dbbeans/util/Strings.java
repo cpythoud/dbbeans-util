@@ -796,4 +796,8 @@ public class Strings {
 
         return Double.toString(val);
     }
+
+    public static String passwordify(String password) {
+        return repeatString("*", password.length());
+    }
 }
