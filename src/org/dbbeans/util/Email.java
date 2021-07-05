@@ -2,6 +2,9 @@ package org.dbbeans.util;
 
 import java.io.File;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -249,7 +252,8 @@ public class Email {
 
             apacheEmail.send();
         } catch (final EmailException eex) {
-            throw new RuntimeException(eex.getMessage());
+            System.err.println(Exceptions.getStackTrace(eex));
+            throw new RuntimeException(eex);
         }
     }
 
@@ -377,5 +381,20 @@ public class Email {
 
     public void setDebug(boolean debug) {
         this.debug = debug;
+    }
+
+    public static String getHostname() {
+        String hostname;
+
+        try {
+            hostname = InetAddress.getLocalHost().getHostName();
+            if (Strings.isEmpty(hostname))
+                hostname = "No hostname returned !!!";
+        } catch (UnknownHostException e) {
+            System.err.println(Exceptions.getStackTrace(e));
+            hostname = "UNKNOWN HOST EXCEPTION THROWN";
+        }
+
+        return hostname;
     }
 }
