@@ -3,13 +3,17 @@ package org.dbbeans.util;
 import java.io.File;
 
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.UnknownHostException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.mail.EmailAttachment;
@@ -78,6 +82,10 @@ public class Email {
     private final List<Attachment> attachments = new ArrayList<Attachment>();
 
     private boolean debug = false;
+
+    private org.apache.commons.mail.Email apacheEmail;
+    private final List<Pair<URL, String>> embeddedImages = new ArrayList<Pair<URL, String>>();
+    private final Map<String, String> embeddedImageCIDs = new HashMap<String, String>();
 
     /**
      * Set the SMTP server to be used for sending e-mail. SMTP authentication is not supported yet.
@@ -224,7 +232,10 @@ public class Email {
      * details of the originally thrown exception will be available in the RuntimeException.
      */
     public void send() {
-        final org.apache.commons.mail.Email apacheEmail = createEmail();
+        if (apacheEmail == null)
+            apacheEmail = createEmail();
+        else
+            processHtmlEmail((HtmlEmail) apacheEmail);
 
         if (Strings.isEmpty(smtpServer))
             throw new IllegalArgumentException("No SMTP server specified.");
@@ -285,7 +296,11 @@ public class Email {
         }
 
         final HtmlEmail htmlEmail = new HtmlEmail();
+        processHtmlEmail(htmlEmail);
+        return htmlEmail;
+    }
 
+    private void processHtmlEmail(final HtmlEmail htmlEmail) {
         try {
             if (escapeNonAsciiCharacters)
                 htmlEmail.setHtmlMsg(HTMLText.accentsToEscape(htmlPrologue + htmlMainText + htmlEpilogue));
@@ -298,8 +313,41 @@ public class Email {
         } catch (final EmailException eex) {
             throw new RuntimeException(eex.getMessage());
         }
+    }
 
-        return htmlEmail;
+    /**
+     * Allows to manually initialize the Apache Email object used internally. Required if you need to embed images
+     * in messages. Only works for HTML emails.
+     */
+    public void initApacheEmail() {
+        if (apacheEmail != null)
+            throw new IllegalStateException("Apache email has already been initialized");
+        if (textOnly)
+            throw new IllegalArgumentException("Apache email pre-initialisation is only available for HTML emails");
+
+        HtmlEmail htmlEmail = new HtmlEmail();
+        try {
+            for (Pair<URL, String> embeddedImage: embeddedImages)
+                embeddedImageCIDs.put(embeddedImage.e2, htmlEmail.embed(embeddedImage.e1, embeddedImage.e2));
+        } catch (EmailException eex) {
+            throw new RuntimeException(eex);
+        }
+
+        apacheEmail = htmlEmail;
+    }
+
+    /**
+     * Returns CID of embedded image registered through addEmbeddedImage(). Function initApacheEmail() must be called
+     * before this function can be used.
+     * @param name used to register the embedded image.
+     * @return the CID of the image for accessing it from the message HTML content.
+     */
+    public String getImageCID(String name) {
+        String cid = embeddedImageCIDs.get(name);
+        if (cid == null)
+            throw new IllegalArgumentException("No CID available for image with name: " + name);
+
+        return cid;
     }
 
     /**
@@ -396,5 +444,22 @@ public class Email {
         }
 
         return hostname;
+    }
+
+    /**
+     * Add an image to embed in the message through a publicly available URL. All images must be registered through
+     * this function before you call initApacheEmail().
+     * @param imageURL, URL from which the image should be downloaded
+     * @param name of the image file, used internally and to obtain the image CID by calling getImageCID(). The name
+     *             must include a file extension identical to the one of the downloaded file.
+     */
+    public void addEmbeddedImage(String imageURL, String name) {
+        URL url;
+        try {
+            url = new URL(imageURL);
+        } catch (MalformedURLException mue) {
+            throw new RuntimeException(mue);
+        }
+        embeddedImages.add(new Pair<URL, String>(url, name));
     }
 }
